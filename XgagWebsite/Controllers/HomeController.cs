@@ -6,11 +6,13 @@ using System.Web.Mvc;
 
 namespace XgagWebsite.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
-            return View();
+            var posts = DbContext.Posts.ToList();
+
+            return View(posts);
         }
 
         public ActionResult About()
