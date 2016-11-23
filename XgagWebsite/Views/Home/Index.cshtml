@@ -1,34 +1,30 @@
-﻿@{
+﻿@using XgagWebsite.Models
+@model List<Post>
+@{
     ViewBag.Title = "Home Page";
 }
 
 <div class="jumbotron">
     <div class="container">
-        <div class="row col-lg-8 post-row">
-            <h3>Title!</h3>
-            <img src="http://img-9gag-fun.9cache.com/photo/aYKovKx_460s.jpg" class="post-image" />
-            <div>
-                <span class="text-info text">Score: <span>15</span></span>
+        @foreach (var post in Model)
+        {
+            <div class="row col-lg-8 post-row">
+                <h3 class="text-primary">@post.Title</h3>
+                <img src="@(post.ImageUrl)" class="post-image" />
+                <div>
+                    <span class="text-info text">Score: <span>@post.Score</span></span>
+                </div>
+                <div>
+                    <button class="btn btn-default @(!Request.IsAuthenticated ? "disabled" : "")">
+                        <span class="glyphicon glyphicon-arrow-up"></span>
+                    </button>
+                    <button class="btn btn-default @(!Request.IsAuthenticated ? "disabled" : "")">
+                        <span class="glyphicon glyphicon-arrow-down"></span>
+                    </button>
+                    <span class="pull-right text-info">Posted at: <span>@post.DateCreated</span></span>
+                </div>
+                <hr class="show" />
             </div>
-            <div>
-                <button class="btn btn-default"><span class="glyphicon glyphicon-arrow-up"></span></button>
-                <button class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span></button>
-                <span class="pull-right text-info">Posted at: <span>2016/02/15</span></span>
-            </div>
-            <hr class="show" />
-        </div>
-        <div class="row col-lg-8 post-row">
-            <h3>Title!</h3>
-            <img src="http://img-9gag-fun.9cache.com/photo/aYKovKx_460s.jpg" class="post-image" />
-            <div>
-                <span class="text-info text">Score: <span>15</span></span>
-            </div>
-            <div>
-                <button class="btn btn-default"><span class="glyphicon glyphicon-arrow-up"></span></button>
-                <button class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span></button>
-                <span class="pull-right text-info">Posted at: <span>2016/02/15</span></span>
-            </div>
-            <hr />
-        </div>
+        }
     </div>
 </div>

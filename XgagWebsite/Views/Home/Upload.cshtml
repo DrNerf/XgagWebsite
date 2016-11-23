@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "Upload";
+}
+
+<h2>Upload</h2>
+
+<div class="jumbotron">
+    <div class="container">
+        <div class="col-lg-4">
+            <div class="row">
+                <input class="form-control" id="title" placeholder="Title:" />
+                <input class="form-control" id="imageUrl" placeholder="Image URL:" />
+            </div>
+            <div class="row">
+                <button class="btn btn-default" id="savePost">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </button>
+                <button class="btn btn-default" id="showPost">
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                </button>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="hidden" id="template">
+                <div class="post-row">
+                    <h3 class="text-primary" id="titleTemplate">Title</h3>
+                    <img id="imageTemplate" src="http://img-9gag-fun.9cache.com/photo/aYKovKx_460s.jpg" class="post-image" />
+                    <div>
+                        <span class="text-info text">Score: <span>69</span></span>
+                    </div>
+                    <div>
+                        <button class="btn btn-default">
+                            <span class="glyphicon glyphicon-arrow-up"></span>
+                        </button>
+                        <button class="btn btn-default">
+                            <span class="glyphicon glyphicon-arrow-down"></span>
+                        </button>
+                        <span class="pull-right text-info">Posted at: <span>@DateTime.Now.Date.ToString("d")</span></span>
+                    </div>
+                    <hr class="show" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#showPost').click(function () {
+                var title = $('#title').val();
+                var imageUrl = $('#imageUrl').val();
+                $('#titleTemplate').text(title);
+                $('#imageTemplate').attr('src', imageUrl);
+                $('#template').removeClass('hidden').show();
+            });
+
+            $('#savePost').click(function () {
+                $('#savePost').addClass('disabled');
+                var title = $('#title').val();
+                var imageUrl = $('#imageUrl').val();
+                var data = {
+                    Title: title,
+                    ImageUrl: imageUrl
+                };
+
+                $.post("/Home/UploadPost", data, function (data) {
+                    console.log(data);
+                    $('#savePost').removeClass('disabled');
+                    if (data.IsSuccess) {
+                        window.location.href = "/Home/Index";
+                    }
+                    else {
+                        alert(data.Message);
+                    }
+                });
+            });
+        });
+    </script>    
+}

@@ -23,9 +23,14 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Meme Generator</a>
+                        @Html.ActionLink("Home", "Index", "Home")
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-picture"></span>
+                            Meme Generator
+                        </a>
                         <ul class="dropdown-menu">
                             <li><a href="https://imgflip.com/memegenerator" target="_blank">imgflip</a></li>
                             <li><a href="https://memegenerator.net/" target="_blank">MemeGenerator.net</a></li>
@@ -33,10 +38,16 @@
                             <li><a href="http://memeful.com/generator" target="_blank">Memeful</a></li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="/Home/Upload">
+                            <span class="glyphicon glyphicon-upload"></span>
+                            Upload
+                        </a>
+                    </li>
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>
                         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
-                @*@Html.Partial("_LoginPartial")*@
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
