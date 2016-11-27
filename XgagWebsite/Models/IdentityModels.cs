@@ -20,11 +20,16 @@ namespace XgagWebsite.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Image> Images { get; set; }
+
         public DbSet<Post> Posts { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
         }
 
         public static ApplicationDbContext Create()

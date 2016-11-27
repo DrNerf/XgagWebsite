@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
 namespace XgagWebsite.Models
 {
-    public class Post
+    public class Comment
     {
-        public int PostId { get; set; }
+        [Key]
+        public int Id { get; set; }
 
-        public string Title { get; set; }
+        public string Text { get; set; }
 
-        public virtual Image Image { get; set; }
-
-        public int Score { get; set; }
-
-        public DateTime DateCreated { get; set; }
+        public DateTime DateTimePosted { get; set; }
 
         public virtual ApplicationUser Owner { get; set; }
 

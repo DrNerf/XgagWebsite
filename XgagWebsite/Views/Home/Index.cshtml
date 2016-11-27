@@ -11,15 +11,15 @@
             {
                 <div class="row post-row">
                     <h3 class="text-primary">@post.Title</h3>
-                    <img src="@(post.ImageUrl)" class="post-image" />
+                    <img src="@(string.Format("/Images/View/{0}", post.Image.Id))" class="post-image" />
                     <div>
                         <span class="text-info text">Score: <span>@post.Score</span></span>
                     </div>
                     <div>
-                        <button class="btn btn-default @(!Request.IsAuthenticated ? "disabled" : "")">
+                        <button class="btn btn-default @(!Request.IsAuthenticated || true ? "disabled" : "")">
                             <span class="glyphicon glyphicon-arrow-up"></span>
                         </button>
-                        <button class="btn btn-default @(!Request.IsAuthenticated ? "disabled" : "")">
+                        <button class="btn btn-default @(!Request.IsAuthenticated || true ? "disabled" : "")">
                             <span class="glyphicon glyphicon-arrow-down"></span>
                         </button>
                         <span class="pull-right text-info">Posted at: <span>@post.DateCreated</span></span>

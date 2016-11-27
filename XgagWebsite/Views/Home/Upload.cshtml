@@ -9,17 +9,34 @@
     <div class="container">
         <div class="col-lg-4">
             <div class="row">
-                <input class="form-control" id="title" placeholder="Title:" />
-                <input class="form-control" id="imageUrl" placeholder="Image URL:" />
+                <div>
+                    @using (Html.BeginForm("Upload", "Posts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="row">
+                            <input class="form-control" name="title" id="title" placeholder="Title:" />
+                        </div>
+                        <div class="row">
+                            <span class="span4">
+                                <input type="file" name="uploadImage" class="input-files btn btn-default" />
+                            </span>
+                            <span class="span2">
+                                <button type="submit" name="button" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-upload"></span>
+                                    Upload
+                                </button>
+                            </span>
+                        </div>
+                    }
+                </div>
             </div>
-            <div class="row">
+            @*<div class="row">
                 <button class="btn btn-default" id="savePost">
                     <span class="glyphicon glyphicon-ok"></span>
                 </button>
                 <button class="btn btn-default" id="showPost">
                     <span class="glyphicon glyphicon-eye-open"></span>
                 </button>
-            </div>
+            </div>*@
         </div>
         <div class="col-lg-8">
             <div class="hidden" id="template">

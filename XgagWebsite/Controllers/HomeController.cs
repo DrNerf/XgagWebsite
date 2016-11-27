@@ -47,7 +47,7 @@ namespace XgagWebsite.Controllers
             var isValid = false;
             string message = string.Empty;
 
-            if (!String.IsNullOrEmpty(post.Title) && !String.IsNullOrEmpty(post.ImageUrl))
+            if (!String.IsNullOrEmpty(post.Title) && post.Image != null)
             {
                 isValid = true;
             }
