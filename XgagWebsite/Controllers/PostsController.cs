@@ -12,6 +12,7 @@ namespace XgagWebsite.Controllers
     public class PostsController : BaseController
     {
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> Upload(string title, HttpPostedFileBase uploadImage)
         {
             if (string.IsNullOrEmpty(title) || uploadImage == null)
@@ -37,6 +38,18 @@ namespace XgagWebsite.Controllers
             await DbContext.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult View(int id)
+        {
+            var post = DbContext.Posts.FirstOrDefault(p => p.PostId == id);
+
+            if (post == null)
+            {
+                throw new HttpException(404, "Post not found :(");
+            }
+
+            return View(post);
         }
     }
 }

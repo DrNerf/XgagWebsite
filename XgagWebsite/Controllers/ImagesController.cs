@@ -14,7 +14,7 @@ namespace XgagWebsite.Controllers
     {
         public ActionResult View(int id)
         {
-            var item = DbContext.Images.FirstOrDefault(i => i.Id == id);
+            var item = DbContext.Images.FirstOrDefault(i => i.ImageId == id);
             if (item != null)
             {
                 byte[] buffer = item.Data;
@@ -36,7 +36,7 @@ namespace XgagWebsite.Controllers
 
                     if (dbimage != null)
                     {
-                        ids.Add(dbimage.Id);
+                        ids.Add(dbimage.ImageId);
                     }
                     else
                     {

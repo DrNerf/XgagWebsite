@@ -31,3 +31,9 @@ textarea {
 .post-row{
     border-bottom: 1px solid #dadada;
 }
+
+.text-editor{
+    height:100px !important;
+    max-width:999999px;
+    width:100%;
+}

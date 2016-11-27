@@ -9,7 +9,7 @@ namespace XgagWebsite.Models
     public class Image
     {
         [Key]
-        public int Id { get; set; }
+        public int ImageId { get; set; }
 
         public byte[] Data { get; set; }
     }

@@ -11,7 +11,7 @@
             {
                 <div class="row post-row">
                     <h3 class="text-primary">@post.Title</h3>
-                    <img src="@(string.Format("/Images/View/{0}", post.Image.Id))" class="post-image" />
+                    <a href="/Posts/View/@(post.PostId)"><img src="@(string.Format("/Images/View/{0}", post.Image.ImageId))" class="post-image" /></a>
                     <div>
                         <span class="text-info text">Score: <span>@post.Score</span></span>
                     </div>
@@ -22,14 +22,19 @@
                         <button class="btn btn-default @(!Request.IsAuthenticated || true ? "disabled" : "")">
                             <span class="glyphicon glyphicon-arrow-down"></span>
                         </button>
+                        <a href="/Posts/View/@(post.PostId)">
+                            <button class="btn btn-default @(!Request.IsAuthenticated ? "disabled" : "")">
+                                <span class="glyphicon glyphicon-comment"></span>
+                            </button>
+                        </a>
                         <span class="pull-right text-info">Posted at: <span>@post.DateCreated</span></span>
                     </div>
                     <hr class="show" />
                 </div>
             }
         </div>
-        <div class="col-lg-4">
+        @*<div class="col-lg-4">
             <h2 class="text-primary">Top posts:</h2>
-        </div>
+        </div>*@
     </div>
 </div>

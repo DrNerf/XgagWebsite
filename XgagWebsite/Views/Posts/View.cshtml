@@ -1,0 +1,35 @@
+﻿@model XgagWebsite.Models.Post
+
+@{
+    ViewBag.Title = Model.Title;
+}
+
+<div class="jumbotron">
+    <div class="container">
+        <div class="col-lg-8">
+            <div class="row post-row">
+                <h3 class="text-primary">@Model.Title</h3>
+                <img src="@(string.Format("/Images/View/{0}", Model.Image.ImageId))" class="post-image" />
+                <div>
+                    <span class="text-info text">Score: <span>@Model.Score</span></span>
+                </div>
+                <div>
+                    <button class="btn btn-default @(!Request.IsAuthenticated || true ? "disabled" : "")">
+                        <span class="glyphicon glyphicon-arrow-up"></span>
+                    </button>
+                    <button class="btn btn-default @(!Request.IsAuthenticated || true ? "disabled" : "")">
+                        <span class="glyphicon glyphicon-arrow-down"></span>
+                    </button>
+                    <span class="pull-right text-info">Posted at: <span>@Model.DateCreated</span></span>
+                </div>
+            </div>
+            <hr />
+            <div class="row container">
+                <textarea placeholder="Give em' some hate!" class="text-editor form-control pull-left"></textarea>
+                <button class="btn btn-default pull-right disabled">
+                    <span class="glyphicon glyphicon-send"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
