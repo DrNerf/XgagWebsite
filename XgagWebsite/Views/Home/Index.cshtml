@@ -16,14 +16,14 @@
                         <span class="text-info text">Score: <span>@post.Score</span></span>
                     </div>
                     <div>
-                        <button class="btn btn-default @(!Request.IsAuthenticated || true ? "disabled" : "")">
+                        <button class="btn btn-primary @(!Request.IsAuthenticated || true ? "disabled" : "")">
                             <span class="glyphicon glyphicon-arrow-up"></span>
                         </button>
-                        <button class="btn btn-default @(!Request.IsAuthenticated || true ? "disabled" : "")">
+                        <button class="btn btn-primary @(!Request.IsAuthenticated || true ? "disabled" : "")">
                             <span class="glyphicon glyphicon-arrow-down"></span>
                         </button>
                         <a href="/Posts/View/@(post.PostId)">
-                            <button class="btn btn-default @(!Request.IsAuthenticated ? "disabled" : "")">
+                            <button class="btn btn-primary @(!Request.IsAuthenticated ? "disabled" : "")">
                                 <span class="glyphicon glyphicon-comment"></span>
                             </button>
                         </a>

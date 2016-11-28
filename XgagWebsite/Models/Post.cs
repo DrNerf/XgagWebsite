@@ -7,6 +7,11 @@ namespace XgagWebsite.Models
 {
     public class Post
     {
+        public Post()
+        {
+            Comments = new List<Comment>();
+        }
+
         public int PostId { get; set; }
 
         public string Title { get; set; }
@@ -19,6 +24,6 @@ namespace XgagWebsite.Models
 
         public virtual ApplicationUser Owner { get; set; }
 
-        public virtual IEnumerable<Comment> Comments { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

@@ -14,10 +14,10 @@
                     <span class="text-info text">Score: <span>@Model.Score</span></span>
                 </div>
                 <div>
-                    <button class="btn btn-default @(!Request.IsAuthenticated || true ? "disabled" : "")">
+                    <button class="btn btn-primary @(!Request.IsAuthenticated || true ? "disabled" : "")">
                         <span class="glyphicon glyphicon-arrow-up"></span>
                     </button>
-                    <button class="btn btn-default @(!Request.IsAuthenticated || true ? "disabled" : "")">
+                    <button class="btn btn-primary @(!Request.IsAuthenticated || true ? "disabled" : "")">
                         <span class="glyphicon glyphicon-arrow-down"></span>
                     </button>
                     <span class="pull-right text-info">Posted at: <span>@Model.DateCreated</span></span>
@@ -25,11 +25,141 @@
             </div>
             <hr />
             <div class="row container">
-                <textarea placeholder="Give em' some hate!" class="text-editor form-control pull-left"></textarea>
-                <button class="btn btn-default pull-right disabled">
+                <textarea id="post-comment" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻" class="text-editor form-control pull-left"></textarea>
+                <button id="send-post-comment" 
+                        data-id="@(Model.PostId)" 
+                        class="btn btn-primary btn-block pull-right @(!Request.IsAuthenticated ? "disabled" : string.Empty)">
                     <span class="glyphicon glyphicon-send"></span>
                 </button>
+            </div>
+            <div class="row">
+                @if(Model.Comments != null)
+                {
+                    foreach (var comment in Model.Comments)
+                    {
+                        <div class="row comment-row">
+                            <div class="row col-lg-12">
+                                <h4 class="text-primary">
+                                    @(comment.Owner.UserName)
+                                    @if (Model.Owner.UserName == comment.Owner.UserName)
+                                    {
+                                        <span class="text-success">OP</span>
+                                    }
+                                    - <span class="text-muted">@(comment.DateTimePosted)</span>
+                                </h4>
+                                <p>@(comment.Text)</p>
+                                <button class="btn btn-primary btn-sm pull-right @(!Request.IsAuthenticated ? "disabled" : string.Empty)"
+                                        data-toggle="modal"
+                                        data-target="#reply-modal"
+                                        onclick="selectComment(@(comment.CommentId));">
+                                    <span class="glyphicon glyphicon-comment"></span>
+                                </button>
+                            </div>
+                            @if (comment.Comments != null)
+                            {
+                                <div class="row col-lg-11 pull-right">
+                                    @foreach (var reply in comment.Comments)
+                                    {
+                                    <div class="reply-row">
+                                        <h4 class="text-primary">
+                                            @(reply.Owner.UserName)
+                                            @if (Model.Owner.UserName == reply.Owner.UserName)
+                                            {
+                                                <span class="text-success">OP</span>
+                                            }
+                                            - <span class="text-muted">@(reply.DateTimePosted)</span>
+                                        </h4>
+                                        <p>@(reply.Text)</p>
+                                    </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                }
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="reply-modal" tabindex="-1" role="dialog" aria-labelledby="Reply">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Reply</h4>
+            </div>
+            <div class="modal-body">
+                <textarea id="reply-text" placeholder="Spit some fire! (ง'̀-'́)ง" class="text-editor form-control"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="save-reply" onclick="sendReply();" type="button" class="btn btn-primary">Reply</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var selectedCommentId;
+        function selectComment(id) {
+            selectedCommentId = id;
+        }
+
+        function sendReply() {
+            var button = $('#send-reply');
+            button.addClass('disabled');
+            var commentId = selectedCommentId;
+            var comment = $('#reply-text').val();
+            var data = {
+                replyText: comment,
+                commentId: commentId
+            };
+
+            $.post('/Posts/Reply', data, function (data) {
+                if (data.IsSuccess) {
+                    location.reload();
+                }
+                else {
+                    alert("Whoops, something went wrong.¯\_(ツ)_/¯");
+                }
+                button.removeClass('disabled');
+            }).error(function () {
+                alert("Whoops, something went wrong.¯\_(ツ)_/¯");
+                button.removeClass('disabled');
+            });
+        }
+
+        $(function () {
+            $('#send-post-comment').click(function () {
+                var button = $('#send-post-comment');
+                button.addClass('disabled');
+                var postId = button.attr('data-id');
+                var comment = $('#post-comment').val();
+                var data = {
+                    commentText: comment,
+                    postId: postId
+                };
+
+                if (true) { //shhhh... no tears, just sweet dreams!( ͡° ͜ʖ ͡°)
+                    $.post('/Posts/Comment', data, function (data) {
+                        if (data.IsSuccess) {
+                            location.reload();
+                        }
+                        else {
+                            alert("Whoops, something went wrong.¯\_(ツ)_/¯");
+                        }
+                        button.removeClass('disabled');
+                    }).error(function () {
+                        alert("Whoops, something went wrong.¯\_(ツ)_/¯");
+                        button.removeClass('disabled');
+                    });
+                }
+                else {
+                    button.removeClass('disabled');
+                }
+            });
+        });
+    </script>    
+}

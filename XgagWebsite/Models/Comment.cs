@@ -8,6 +8,11 @@ namespace XgagWebsite.Models
 {
     public class Comment
     {
+        public Comment()
+        {
+            Comments = new List<Comment>();
+        }
+
         [Key]
         public int CommentId { get; set; }
 
@@ -17,6 +22,10 @@ namespace XgagWebsite.Models
 
         public virtual ApplicationUser Owner { get; set; }
 
-        public virtual IEnumerable<Comment> Comments { get; set; }
+        public virtual Post PostOwner { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
+
+        public virtual Comment Parent { get; set; }
     }
 }

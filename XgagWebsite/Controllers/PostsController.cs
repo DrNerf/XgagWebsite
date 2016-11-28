@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -43,6 +44,9 @@ namespace XgagWebsite.Controllers
         public ActionResult View(int id)
         {
             var post = DbContext.Posts.FirstOrDefault(p => p.PostId == id);
+            post.Comments = post.Comments
+                .OrderByDescending(c => c.DateTimePosted)
+                .ToList();
 
             if (post == null)
             {
@@ -50,6 +54,60 @@ namespace XgagWebsite.Controllers
             }
 
             return View(post);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult> Comment(string commentText, int postId)
+        {
+            if (string.IsNullOrEmpty(commentText))
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid comment data!");
+            }
+
+            var post = DbContext.Posts.First(p => p.PostId == postId);
+            var comment = DbContext.Comments.Create();
+            comment.Owner = DbContext.Users.First(u => u.UserName == User.Identity.Name);
+            comment.Text = commentText;
+            comment.DateTimePosted = DateTime.Now;
+            if (post.Comments == null)
+            {
+                post.Comments = new List<Comment>() { comment };
+            }
+            else
+            {
+                post.Comments.Add(comment);
+            }
+            await DbContext.SaveChangesAsync();
+
+            return Json(new { IsSuccess = true });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult> Reply(string replyText, int commentId)
+        {
+            if (string.IsNullOrEmpty(replyText))
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid comment data!");
+            }
+
+            var parent = DbContext.Comments.First(p => p.CommentId == commentId);
+            var comment = DbContext.Comments.Create();
+            comment.Owner = DbContext.Users.First(u => u.UserName == User.Identity.Name);
+            comment.Text = replyText;
+            comment.DateTimePosted = DateTime.Now;
+            if (parent.Comments == null)
+            {
+                parent.Comments = new List<Comment>() { comment };
+            }
+            else
+            {
+                parent.Comments.Add(comment);
+            }
+            await DbContext.SaveChangesAsync();
+
+            return Json(new { IsSuccess = true });
         }
     }
 }
