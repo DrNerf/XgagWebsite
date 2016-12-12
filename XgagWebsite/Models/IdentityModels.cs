@@ -29,7 +29,7 @@ namespace XgagWebsite.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
         }
 
         public static ApplicationDbContext Create()
