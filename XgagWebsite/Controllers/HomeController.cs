@@ -61,7 +61,6 @@ namespace XgagWebsite.Controllers
                 try
                 {
                     post.DateCreated = DateTime.Now;
-                    post.Score = 0;
                     DbContext.Posts.Add(post);
                     await DbContext.SaveChangesAsync();
                     isSuccess = true;

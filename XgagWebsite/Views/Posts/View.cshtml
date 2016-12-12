@@ -8,16 +8,30 @@
     <div class="container">
         <div class="col-lg-8">
             <div class="row post-row">
+                @{ 
+                    var userVote = Request.IsAuthenticated ? Model.Votes.FirstOrDefault(v => v.Voter.UserName == User.Identity.Name) : null;
+                    var hasUserVoted = userVote != null;
+                }
                 <h3 class="text-primary">@Model.Title</h3>
                 <img src="@(string.Format("/Images/View/{0}", Model.Image.ImageId))" class="post-image" />
                 <div>
-                    <span class="text-info text">Score: <span>@Model.Score</span></span>
+                    <span class="text-info text">Score: <span id="score-@(Model.PostId)">@Model.CalculateScore()</span></span>
                 </div>
                 <div>
-                    <button class="btn btn-primary @(!Request.IsAuthenticated || true ? "disabled" : "")">
+                    <button onclick="vote(@(Model.PostId), 1)"
+                            data-unvote="@(hasUserVoted)"
+                            id="upvote-@(Model.PostId)"
+                            class="btn
+                                    @(hasUserVoted && (int)userVote.Type > 0 ? "btn-success" : hasUserVoted ? "disabled btn-primary" : "btn-primary")
+                                    @(!Request.IsAuthenticated ? "disabled" : "")">
                         <span class="glyphicon glyphicon-arrow-up"></span>
                     </button>
-                    <button class="btn btn-primary @(!Request.IsAuthenticated || true ? "disabled" : "")">
+                    <button onclick="vote(@(Model.PostId), -1)"
+                            data-unvote="@(hasUserVoted)"
+                            id="downvote-@(Model.PostId)"
+                            class="btn
+                                    @(hasUserVoted && (int)userVote.Type < 0 ? "btn-danger" : hasUserVoted ? "disabled btn-primary" : "btn-primary")
+                                    @(!Request.IsAuthenticated ? "disabled" : "")">
                         <span class="glyphicon glyphicon-arrow-down"></span>
                     </button>
                     <span class="pull-right text-info">Posted at: <span>@Model.DateCreated</span></span>
@@ -101,6 +115,7 @@
 </div>
 
 @section scripts{
+    <script src="~/Scripts/VotingFunctions.js"></script>
     <script>
         var selectedCommentId;
         function selectComment(id) {

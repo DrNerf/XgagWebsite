@@ -26,6 +26,8 @@ namespace XgagWebsite.Models
 
         public DbSet<Post> Posts { get; set; }
 
+        public DbSet<Vote> Votes { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

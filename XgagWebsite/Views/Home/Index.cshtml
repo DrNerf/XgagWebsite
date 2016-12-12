@@ -1,4 +1,5 @@
 ﻿@using XgagWebsite.Models
+@using Microsoft.AspNet.Identity
 @model List<Post>
 @{
     ViewBag.Title = "Home Page";
@@ -9,17 +10,30 @@
         <div class="col-lg-8">
             @foreach (var post in Model)
             {
+                var userVote = Request.IsAuthenticated ? post.Votes.FirstOrDefault(v => v.Voter.UserName == User.Identity.GetUserName()) : null;
+                var hasUserVoted = userVote != null;
+
                 <div class="row post-row">
                     <h3 class="text-primary">@post.Title</h3>
                     <a href="/Posts/View/@(post.PostId)"><img src="@(string.Format("/Images/View/{0}", post.Image.ImageId))" class="post-image" /></a>
                     <div>
-                        <span class="text-info text">Score: <span>@post.Score</span></span>
+                        <span class="text-info text">Score: <span id="score-@(post.PostId)">@post.CalculateScore()</span></span>
                     </div>
                     <div>
-                        <button class="btn btn-primary @(!Request.IsAuthenticated || true ? "disabled" : "")">
+                        <button onclick="vote(@(post.PostId), 1)"
+                                data-unvote="@(hasUserVoted)" 
+                                id="upvote-@(post.PostId)" 
+                                class="btn 
+                                    @(hasUserVoted && (int)userVote.Type > 0 ? "btn-success" : hasUserVoted ? "disabled btn-primary" : "btn-primary") 
+                                    @(!Request.IsAuthenticated ? "disabled" : "")">
                             <span class="glyphicon glyphicon-arrow-up"></span>
                         </button>
-                        <button class="btn btn-primary @(!Request.IsAuthenticated || true ? "disabled" : "")">
+                        <button onclick="vote(@(post.PostId), -1)" 
+                                data-unvote="@(hasUserVoted)"
+                                id="downvote-@(post.PostId)" 
+                                class="btn 
+                                    @(hasUserVoted && (int)userVote.Type < 0 ? "btn-danger" : hasUserVoted ? "disabled btn-primary" : "btn-primary") 
+                                    @(!Request.IsAuthenticated ? "disabled" : "")">
                             <span class="glyphicon glyphicon-arrow-down"></span>
                         </button>
                         <a href="/Posts/View/@(post.PostId)">
@@ -38,3 +52,8 @@
         </div>*@
     </div>
 </div>
+
+
+@section scripts{ 
+    <script src="~/Scripts/VotingFunctions.js"></script>
+}
