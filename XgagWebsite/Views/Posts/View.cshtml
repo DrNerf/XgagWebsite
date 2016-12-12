@@ -59,7 +59,7 @@
                                     {
                                         <span class="text-success">OP</span>
                                     }
-                                    - <span class="text-muted">@(comment.DateTimePosted)</span>
+                                    - <span class="text-info">@(comment.DateTimePosted)</span>
                                 </h4>
                                 <p>@(comment.Text)</p>
                                 <button class="btn btn-primary btn-sm pull-right @(!Request.IsAuthenticated ? "disabled" : string.Empty)"
@@ -81,7 +81,7 @@
                                             {
                                                 <span class="text-success">OP</span>
                                             }
-                                            - <span class="text-muted">@(reply.DateTimePosted)</span>
+                                            - <span class="text-info">@(reply.DateTimePosted)</span>
                                         </h4>
                                         <p>@(reply.Text)</p>
                                     </div>
