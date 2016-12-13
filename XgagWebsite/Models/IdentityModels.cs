@@ -26,10 +26,12 @@ namespace XgagWebsite.Models
 
         public DbSet<Post> Posts { get; set; }
 
+        public DbSet<Vote> Votes { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
         }
 
         public static ApplicationDbContext Create()

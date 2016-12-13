@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using XgagWebsite.Enums;
 using XgagWebsite.Helpers;
 using XgagWebsite.Models;
 
@@ -31,7 +32,6 @@ namespace XgagWebsite.Controllers
             var post = DbContext.Posts.Create();
             post.DateCreated = DateTime.Now;
             post.Title = title;
-            post.Score = 0; //will be removed
             post.Image = image;
             post.Owner = owner;
 
@@ -108,6 +108,50 @@ namespace XgagWebsite.Controllers
             await DbContext.SaveChangesAsync();
 
             return Json(new { IsSuccess = true });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult> Vote(int postId, VoteType voteType)
+        {
+            var voter = DbContext.Users.First(u => u.UserName == User.Identity.Name);
+            var post = DbContext.Posts.FirstOrDefault(p => p.PostId == postId);
+            if (!post.Votes.Any(v => v.Voter.Id == voter.Id))
+            {
+                var vote = DbContext.Votes.Create();
+                vote.Post = post;
+                vote.Type = voteType;
+                vote.Voter = voter;
+                post.Votes.Add(vote);
+                await DbContext.SaveChangesAsync(); 
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult> Unvote(int postId)
+        {
+            var vote = DbContext.Votes
+                .Where(v => v.Post.PostId == postId)
+                .FirstOrDefault(v => v.Voter.UserName == User.Identity.Name);
+
+            if (vote != null)
+            {
+                DbContext.Votes.Remove(vote);
+                await DbContext.SaveChangesAsync();
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
     }
 }

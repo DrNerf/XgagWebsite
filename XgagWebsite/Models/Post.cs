@@ -10,6 +10,7 @@ namespace XgagWebsite.Models
         public Post()
         {
             Comments = new List<Comment>();
+            Votes = new List<Vote>();
         }
 
         public int PostId { get; set; }
@@ -18,12 +19,17 @@ namespace XgagWebsite.Models
 
         public virtual Image Image { get; set; }
 
-        public int Score { get; set; }
-
         public DateTime DateCreated { get; set; }
 
         public virtual ApplicationUser Owner { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+
+        public virtual ICollection<Vote> Votes { get; set; }
+
+        public int CalculateScore()
+        {
+            return Votes?.Select(v => v.Type).Cast<int>().Sum() ?? 0;
+        }
     }
 }
