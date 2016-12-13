@@ -1,19 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
+using XgagWebsite.Helpers;
 using XgagWebsite.Models;
 
 namespace XgagWebsite.Controllers
 {
     public class HomeController : BaseController
     {
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
+            var pageSize = ConfigurationHelper.Instance.PageSize;
             var posts = DbContext.Posts
                 .OrderByDescending(p => p.DateCreated)
+                .Skip(pageSize * ((page ?? 1) - 1))
+                .Take(pageSize)
                 .ToList();
 
             return View(posts);

@@ -1,5 +1,6 @@
 ﻿@using XgagWebsite.Models
 @using Microsoft.AspNet.Identity
+@using XgagWebsite.Helpers
 @model List<Post>
 @{
     ViewBag.Title = "Home Page";
@@ -43,7 +44,15 @@
                         </a>
                         <span class="pull-right text-info">Posted at: <span>@post.DateCreated</span></span>
                     </div>
-                    <hr class="show" />
+                    <hr />
+                </div>
+            }
+            @if (Model.Count() == ConfigurationHelper.Instance.PageSize)
+            {
+                <div class="row">
+                    <button class="btn btn-info btn-block" id="next-page" data-current-page="@(Request.Params["page"] ?? "1")">
+                        More sh*t <span class="glyphicon glyphicon-arrow-right"></span>
+                    </button>
                 </div>
             }
         </div>
@@ -56,4 +65,14 @@
 
 @section scripts{ 
     <script src="~/Scripts/VotingFunctions.js"></script>
+
+    <script>
+        $(function () {
+            $('#next-page').click(function () {
+                var btn = $("#next-page");
+                var currentPage = btn.attr("data-current-page");
+                window.location = "/Home/Index?page=" + (parseInt(currentPage) + 1);
+            });
+        });
+    </script>
 }
