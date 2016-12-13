@@ -31,5 +31,23 @@ namespace XgagWebsite.Models
         {
             return Votes?.Select(v => v.Type).Cast<int>().Sum() ?? 0;
         }
+
+        public int CountComments()
+        {
+            var count = Comments.Count();
+            count += Comments.Where(c => c.Comments.Any())
+                .SelectMany(c => c.Comments).Count();
+            return count;
+        }
+
+        public bool AnyNewComments()
+        {
+            var anyNewComments = Comments.Any(c => c.DateTimePosted.Date == DateTime.Now.Date);
+            var anyNewRepliesComments = Comments.Where(c => c.Comments.Any())
+                .SelectMany(c => c.Comments)
+                .Any(c => c.DateTimePosted.Date == DateTime.Now.Date);
+
+            return anyNewComments || anyNewRepliesComments;
+        }
     }
 }

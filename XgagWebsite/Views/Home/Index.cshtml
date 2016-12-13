@@ -38,8 +38,11 @@
                             <span class="glyphicon glyphicon-arrow-down"></span>
                         </button>
                         <a href="/Posts/View/@(post.PostId)">
-                            <button class="btn btn-primary @(!Request.IsAuthenticated ? "disabled" : "")">
+                            <button class="btn 
+                                    @(post.AnyNewComments() ? "btn-success" : "btn-primary")
+                                    @(!Request.IsAuthenticated ? "disabled" : "")">
                                 <span class="glyphicon glyphicon-comment"></span>
+                                <span style="font-weight:bold;">@(post.CountComments())</span>
                             </button>
                         </a>
                         <span class="pull-right text-info">Posted at: <span>@post.DateCreated</span></span>
