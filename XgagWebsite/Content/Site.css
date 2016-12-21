@@ -47,3 +47,8 @@ textarea {
 .reply-row{
     border-bottom:1px solid #dadada;
 }
+
+.comment-image{
+    border: 1px solid #df691a;
+    width:80%;
+}

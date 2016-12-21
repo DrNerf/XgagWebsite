@@ -43,7 +43,7 @@
                 <button id="send-post-comment" 
                         data-id="@(Model.PostId)" 
                         class="btn btn-primary btn-block pull-right @(!Request.IsAuthenticated ? "disabled" : string.Empty)">
-                    <span class="glyphicon glyphicon-send"></span>
+                    <span id="send-post-comment-icon" class="glyphicon glyphicon-send"></span>
                 </button>
             </div>
             <div class="row">
@@ -61,7 +61,7 @@
                                     }
                                     - <span class="text-info">@(comment.DateTimePosted)</span>
                                 </h4>
-                                <p>@(comment.Text)</p>
+                                <p>@(Html.Raw(comment.Text))</p>
                                 <button class="btn btn-primary btn-sm pull-right @(!Request.IsAuthenticated ? "disabled" : string.Empty)"
                                         data-toggle="modal"
                                         data-target="#reply-modal"
@@ -83,7 +83,7 @@
                                             }
                                             - <span class="text-info">@(reply.DateTimePosted)</span>
                                         </h4>
-                                        <p>@(reply.Text)</p>
+                                        <p>@Html.Raw(reply.Text)</p>
                                     </div>
                                     }
                                 </div>
@@ -108,7 +108,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button id="save-reply" onclick="sendReply();" type="button" class="btn btn-primary">Reply</button>
+                <input id="save-reply" onclick="sendReply();" type="button" class="btn btn-primary" value="Reply" />
             </div>
         </div>
     </div>
@@ -175,6 +175,34 @@
                     button.removeClass('disabled');
                 }
             });
+
+            $('#post-comment').bind('input propertychange', function () {
+                var value = $('#post-comment').val();
+                var icon = $('#send-post-comment-icon');
+                if (isTextImageUrl(value)) {
+                    icon.removeClass('glyphicon-send');
+                    icon.addClass('glyphicon-picture');
+                }
+                else{
+                    icon.removeClass('glyphicon-picture');
+                    icon.addClass('glyphicon-send');
+                }
+            });
+
+            $('#reply-text').bind('input propertychange', function () {
+                var value = $(this).val();
+                var button = $('#save-reply');
+                if (isTextImageUrl(value)) {
+                    button.val('ʕ•ᴥ•ʔ');
+                }
+                else{
+                    button.val('Reply'); //shhhh
+                }
+            });
         });
+
+        function isTextImageUrl(url) {
+            return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+        }
     </script>    
 }

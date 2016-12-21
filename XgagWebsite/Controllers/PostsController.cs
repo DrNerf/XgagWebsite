@@ -68,7 +68,7 @@ namespace XgagWebsite.Controllers
             var post = DbContext.Posts.First(p => p.PostId == postId);
             var comment = DbContext.Comments.Create();
             comment.Owner = DbContext.Users.First(u => u.UserName == User.Identity.Name);
-            comment.Text = commentText;
+            comment.Text = TryConvertTextToHtml(commentText);
             comment.DateTimePosted = DateTime.Now;
             if (post.Comments == null)
             {
@@ -95,7 +95,7 @@ namespace XgagWebsite.Controllers
             var parent = DbContext.Comments.First(p => p.CommentId == commentId);
             var comment = DbContext.Comments.Create();
             comment.Owner = DbContext.Users.First(u => u.UserName == User.Identity.Name);
-            comment.Text = replyText;
+            comment.Text = TryConvertTextToHtml(replyText);
             comment.DateTimePosted = DateTime.Now;
             if (parent.Comments == null)
             {
@@ -152,6 +152,11 @@ namespace XgagWebsite.Controllers
             }
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        private string TryConvertTextToHtml(string text)
+        {
+            return ImagesHelper.IsImageUrl(text) ? ImagesHelper.GetImageTag(text) : text;
         }
     }
 }
