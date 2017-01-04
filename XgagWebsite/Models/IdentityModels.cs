@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel;
 
 namespace XgagWebsite.Models
 {
@@ -16,6 +17,12 @@ namespace XgagWebsite.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        [DefaultValue(false)]
+        public bool IsSubscribedForNewPosts { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsSubscribedForComments { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace XgagWebsite.Models
@@ -82,6 +83,14 @@ namespace XgagWebsite.Models
         [Required]
         [Display(Name = "User name")]
         public string UserName { get; set; }
+
+        [Required]
+        [Display(Name = "Notify me when new posts are Uploaded")]
+        public bool IsSubscribedForNewPosts { get; set; } = true;
+
+        [Required]
+        [Display(Name = "Notify me when someone comments my post")]
+        public bool IsSubscribedForComments { get; set; } = true;
     }
 
     public class ResetPasswordViewModel

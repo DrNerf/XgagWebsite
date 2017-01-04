@@ -11,7 +11,7 @@ using XgagWebsite.Models;
 namespace XgagWebsite.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -320,6 +320,33 @@ namespace XgagWebsite.Controllers
             }
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+        }
+
+        public ActionResult UpdateSubscriptions()
+        {
+            var user = GetCurrentUser();
+
+            return View(new RegisterViewModel()
+            {
+                IsSubscribedForComments = user.IsSubscribedForComments,
+                IsSubscribedForNewPosts = user.IsSubscribedForNewPosts
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> UpdateSubscriptions(RegisterViewModel model)
+        {
+            if (model == null)
+            {
+                throw new HttpException(500, "Invalid input data!");
+            }
+
+            var user = GetCurrentUser();
+            user.IsSubscribedForNewPosts = model.IsSubscribedForNewPosts;
+            user.IsSubscribedForComments = model.IsSubscribedForComments;
+            await DbContext.SaveChangesAsync();
+            return RedirectToAction("UpdateSubscriptions");
         }
 
         protected override void Dispose(bool disposing)

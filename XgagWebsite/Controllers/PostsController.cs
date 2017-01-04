@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using XgagWebsite.Enums;
 using XgagWebsite.Helpers;
 using XgagWebsite.Models;
+using Service = XgagWebsite.Services;
 
 namespace XgagWebsite.Controllers
 {
@@ -37,6 +38,8 @@ namespace XgagWebsite.Controllers
 
             DbContext.Posts.Add(post);
             await DbContext.SaveChangesAsync();
+
+            NotifySubscribedUsersForNewPost();
 
             return RedirectToAction("Index", "Home");
         }
@@ -80,6 +83,15 @@ namespace XgagWebsite.Controllers
             }
             await DbContext.SaveChangesAsync();
 
+            if (post.Owner.IsSubscribedForComments)
+            {
+                try
+                {
+                    post.Owner.NotifyForNewComment(post, comment);
+                }
+                catch { }
+            }
+
             return Json(new { IsSuccess = true });
         }
 
@@ -105,7 +117,17 @@ namespace XgagWebsite.Controllers
             {
                 parent.Comments.Add(comment);
             }
+
             await DbContext.SaveChangesAsync();
+
+            if (parent.PostOwner.Owner.IsSubscribedForComments)
+            {
+                try
+                {
+                    parent.PostOwner.Owner.NotifyForNewComment(parent.PostOwner, comment);
+                }
+                catch { }
+            }
 
             return Json(new { IsSuccess = true });
         }
@@ -157,6 +179,24 @@ namespace XgagWebsite.Controllers
         private string TryConvertTextToHtml(string text)
         {
             return ImagesHelper.IsImageUrl(text) ? ImagesHelper.GetImageTag(text) : text;
+        }
+
+        private Task NotifySubscribedUsersForNewPost()
+        {
+            var subscriberEmails = DbContext.Users.Where(u => u.IsSubscribedForNewPosts)
+                .Select(u => u.Email)
+                .ToList();
+
+            return Task.Factory.StartNew(() => 
+            {
+                if (subscriberEmails.Any())
+                {
+                    using (var service = new Service.EmailService(subscriberEmails))
+                    {
+                        service.SendToAllReceivers(string.Format("A new post has been uploaded to Xgag. Go check it out!"));
+                    }
+                }
+            });
         }
     }
 }

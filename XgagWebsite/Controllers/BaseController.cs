@@ -11,6 +11,11 @@ namespace XgagWebsite.Controllers
     {
         protected ApplicationDbContext DbContext = new ApplicationDbContext();
 
+        protected virtual ApplicationUser GetCurrentUser()
+        {
+            return DbContext.Users.First(u => u.UserName == User.Identity.Name);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
