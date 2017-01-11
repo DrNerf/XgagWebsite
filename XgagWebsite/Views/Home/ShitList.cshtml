@@ -1,0 +1,190 @@
+﻿@using XgagWebsite.Enums
+@using XgagWebsite.ViewModels
+
+@model PeopleListViewModel
+@{
+    ViewBag.Title = Model.PageType == VoteType.Down ? "Shit List" : "Good Guy List";
+}
+<div class="row">
+    @if (Model.PageType == VoteType.Down)
+    {
+        <h2 class="pull-left">Top shitbags for this week:</h2>
+    }
+    else
+    {
+        <h2 class="pull-left">Top helping bros for this week:</h2>
+    }
+    <h3 class="pull-right">
+        Latest ranking on:
+        @(Model.LastRankingDateTime.HasValue ? Model.LastRankingDateTime.Value.ToString() : "No ranking yet")
+    </h3>
+</div>
+<div class="row">
+    <div>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr class="person-name">
+                    <th>Rank</th>
+                    <th></th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    @if (Model.PageType == VoteType.Down)
+                    {
+                        <th>Shits given</th>
+                    }
+                    else
+                    {
+                        <th>Salutes given</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var person in Model.LastRanking)
+                {
+                    <tr class="person-name">
+                        <td>@person.Rank</td>
+                        <td><img class="person-image" src="@person.Person.Image" /></td>
+                        <td>@person.Person.FirstName</td>
+                        <td>@person.Person.LastName</td>
+                        <td>@person.Score</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<hr />
+
+<button class="btn btn-primary btn-block" id="open-search-form">
+    
+    @if (Model.PageType == VoteType.Down)
+    {
+        <span class="glyphicon glyphicon-thumbs-down"></span>
+        <text>I wanna sprinkle some salt!</text>
+    }
+    else
+    {
+        <span class="glyphicon glyphicon-thumbs-up"></span>
+        <text>I wanna salute someone!</text>
+    }
+
+</button>
+
+<div class="row" id="search-form" style="display:none;">
+    <div class="col-lg-4">
+        <input type="text" placeholder="First Name" class="form-control" data-bind="value: firstName" />
+        <input type="text" placeholder="Last Name" class="form-control" data-bind="value: lastName" />
+        <button class="btn btn-primary" data-bind="click: searchPeople, attr: {disabled: isBusy}">
+            <span class="glyphicon glyphicon-search" data-bind="visible: !isBusy()"></span>
+            <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" data-bind="visible: isBusy"></span>
+            Search
+        </button>
+    </div>
+    <div class="col-lg-8">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr class="person-name">
+                    <th></th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    @if (Model.PageType == VoteType.Down)
+                    {
+                        <th>Shits given</th>
+                    }
+                    else
+                    {
+                        <th>Salutes given</th>
+                    }
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: people">
+                <tr class="person-name">
+                    <td>
+                        <img data-bind="attr: {src: imageUrl}" class="person-image" />
+                    </td>
+                    <td data-bind="text: $data.firstName"></td>
+                    <td data-bind="text: $data.lastName"></td>
+                    <td data-bind="text: $data.votes"></td>
+                    <td>
+                        @if (Model.PageType == VoteType.Down)
+                        {
+                            <button class="btn btn-danger" data-bind="click: $parent.votePerson">
+                                <span class="glyphicon glyphicon-thumbs-down"></span>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-success" data-bind="click: $parent.votePerson">
+                                <span class="glyphicon glyphicon-thumbs-up"></span>
+                            </button>
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        var vm = {
+            people: ko.observableArray(),
+            listType: ko.observable(@((int)Model.PageType)),
+            firstName: ko.observable(),
+            lastName: ko.observable(),
+            isBusy: ko.observable(false),
+            searchPeople: function () {
+                vm.isBusy(true);
+                var searchParams = {
+                    firstName: vm.firstName(),
+                    lastName: vm.lastName(),
+                    voteType: vm.listType()
+                };
+
+                $.get("/People/Search", searchParams, function (data) {
+                    vm.people(data);
+                    console.log(vm.people());
+                    vm.isBusy(false);
+                });
+            },
+            votePerson: function (person) {
+                var voteParams = {
+                    personId: person.personId,
+                    voteType: vm.listType()
+                };
+                console.log();
+                $.post("/People/Vote", voteParams, function (data) {
+                    console.log(data);
+                    if (!data) {
+                        toastr["error"]("You need to authorize!", "Whoops");
+                        return;
+                    }
+                    if (data.isSuccess) {
+                        vm.searchPeople();
+                        if (vm.listType() == -1) {
+                            toastr["success"]("Salt delivered successfully to " + person.firstName + " " + person.lastName, "Salty!");
+                        } else {
+                            toastr["success"]("Honors delivered successfully to " + person.firstName + " " + person.lastName, "Salute!");
+                        }
+                    } else {
+                        toastr["error"](data.response, "( ͡° ͜ʖ ͡°)");
+                    }
+                }).error(function () {
+                    toastr["error"]("Whoops. Something went on fire...", "Whoops");
+                });
+            },
+        };
+
+        ko.applyBindings(vm);
+
+        $(function () {
+            $('#open-search-form').click(function () {
+                $('#search-form').show('slow');
+                $(this).hide('slow');
+            });
+        });
+    </script>    
+}

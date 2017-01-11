@@ -114,5 +114,95 @@ namespace XgagWebsite.Helpers
             }
         }
 
+        private int? m_RankingPeopleCount;
+
+        public int RankingPeopleCount
+        {
+            get
+            {
+                if (!m_RankingPeopleCount.HasValue)
+                {
+                    m_RankingPeopleCount = int.Parse(ConfigurationManager.AppSettings[nameof(RankingPeopleCount)]);
+                }
+
+                return m_RankingPeopleCount.Value;
+            }
+        }
+
+        private int? m_RankingPersistPeriod;
+
+        public int RankingPersistPeriod
+        {
+            get
+            {
+                if (!m_RankingPersistPeriod.HasValue)
+                {
+                    m_RankingPersistPeriod = int.Parse(ConfigurationManager.AppSettings[nameof(RankingPersistPeriod)]);
+                }
+
+                return m_RankingPersistPeriod.Value;
+            }
+        }
+
+        private int? m_MaxDailyVotes;
+
+        public int MaxDailyVotes
+        {
+            get
+            {
+                if (!m_MaxDailyVotes.HasValue)
+                {
+                    m_MaxDailyVotes = int.Parse(ConfigurationManager.AppSettings[nameof(MaxDailyVotes)]);
+                }
+
+                return m_MaxDailyVotes.Value;
+            }
+        }
+
+        private int? m_BaseXP;
+
+        public int BaseXP
+        {
+            get
+            {
+                if (!m_BaseXP.HasValue)
+                {
+                    m_BaseXP = int.Parse(ConfigurationManager.AppSettings[nameof(BaseXP)]);
+                }
+
+                return m_BaseXP.Value;
+            }
+        }
+
+        private int? m_XPMultiplier;
+
+        public int XPMultiplier
+        {
+            get
+            {
+                if (!m_XPMultiplier.HasValue)
+                {
+                    m_XPMultiplier = int.Parse(ConfigurationManager.AppSettings[nameof(XPMultiplier)]);
+                }
+
+                return m_XPMultiplier.Value;
+            }
+        }
+
+        private int? m_XPRewardsCount;
+
+        public int XPRewardsCount
+        {
+            get
+            {
+                if (!m_XPMultiplier.HasValue)
+                {
+                    m_XPMultiplier = int.Parse(ConfigurationManager.AppSettings[nameof(XPMultiplier)]);
+                }
+
+                return m_XPMultiplier.Value;
+            }
+        }
+
     }
 }

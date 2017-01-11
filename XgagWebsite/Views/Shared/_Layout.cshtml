@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Xgag</title>
     @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -23,7 +24,10 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        @Html.ActionLink("Home", "Index", "Home")
+                        <a href="/Home/Index">
+                            <span class="glyphicon glyphicon-home"></span>
+                            Home
+                        </a>
                     </li>
                     <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -43,6 +47,18 @@
                             Upload
                         </a>
                     </li>
+                    <li>
+                        <a href="/Home/ShitList">
+                            <span class="glyphicon glyphicon-thumbs-down"></span>
+                            Shit list
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Home/GoodGuyList">
+                            <span class="glyphicon glyphicon-thumbs-up"></span>
+                            Good Guy list
+                        </a>
+                    </li>
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>
                         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
@@ -60,6 +76,27 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js'></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-bottom-full-width",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "slideDown",
+            "hideMethod": "slideUp"
+        }
+    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
