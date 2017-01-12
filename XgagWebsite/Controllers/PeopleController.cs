@@ -32,7 +32,8 @@ namespace XgagWebsite.Controllers
                 LastName = r.LastName,
                 PersonId = r.PersonId,
                 Votes = r.Votes.Count(v => v.VoteType == voteType),
-                ImageUrl = r.Image
+                ImageUrl = r.Image,
+                Experience = voteType == VoteType.Down ? r.DownExperience : r.UpExperience
             });
 
             return Content(JsonConvert.SerializeObject(response), "application/json");
@@ -67,6 +68,46 @@ namespace XgagWebsite.Controllers
             await DbContext.SaveChangesAsync();
 
             return JsonResult(new GenericOperationResponse<object>());
+        }
+
+        public ActionResult GetTopPeople(VoteType voteType)
+        {
+            var results = DbContext.People
+                .OrderByDescending(p => p.Votes.Count(v => v.VoteType == voteType))
+                .Where(p => p.Votes.Count(v => v.VoteType == voteType) > 0)
+                .Take(ConfigurationHelper.Instance.RankingPeopleCount)
+                .Select(p => new PeopleTableItemResponse()
+                {
+                    FirstName = p.FirstName,
+                    ImageUrl = p.Image,
+                    LastName = p.LastName,
+                    PersonId = p.PersonId,
+                    Votes = p.Votes.Count(v => v.VoteType == voteType),
+                    Experience = voteType == VoteType.Down ? p.DownExperience : p.UpExperience
+                })
+                .ToList();
+
+            return JsonResult(results);
+        }
+
+        public ActionResult GetTopXPPeople(VoteType voteType)
+        {
+            var results = DbContext.People
+                .OrderByDescending(p => voteType == VoteType.Down ? p.DownExperience : p.UpExperience)
+                .Where(p => (voteType == VoteType.Down ? p.DownExperience : p.UpExperience) > 0)
+                .Take(ConfigurationHelper.Instance.RankingPeopleCount)
+                .Select(p => new PeopleTableItemResponse()
+                {
+                    FirstName = p.FirstName,
+                    ImageUrl = p.Image,
+                    LastName = p.LastName,
+                    PersonId = p.PersonId,
+                    Votes = p.Votes.Count(v => v.VoteType == voteType),
+                    Experience = voteType == VoteType.Down ? p.DownExperience : p.UpExperience
+                })
+                .ToList();
+
+            return JsonResult(results);
         }
     }
 }

@@ -19,7 +19,9 @@ namespace XgagWebsite.Controllers
                 using (ApplicationDbContext db = new ApplicationDbContext())
                 {
                     var latestRanking = db.RankingHistory.OrderByDescending(rh => rh.RankingDateTime).FirstOrDefault();
-                    if (latestRanking == null || latestRanking.RankingDateTime < DateTime.Now)
+                    if (latestRanking == null || 
+                        latestRanking.RankingDateTime.AddDays(ConfigurationHelper.Instance.RankingPersistPeriod) 
+                        < DateTime.Now)
                     {
                         RankPeopleLists(db);
                     } 
@@ -102,7 +104,11 @@ namespace XgagWebsite.Controllers
             viewModel.LastRanking = DbContext.PeopleRanking
                 .Where(pr => pr.RankType == voteType)
                 .OrderBy(pr => pr.Rank)
-                .Select(pr => pr)
+                .ToList();
+            viewModel.TopPeople = DbContext.People
+                .OrderByDescending(p => p.Votes.Count(v => v.VoteType == voteType))
+                .Where(p => p.Votes.Count(v => v.VoteType == voteType) > 0)
+                .Take(ConfigurationHelper.Instance.RankingPeopleCount)
                 .ToList();
 
             return View(viewModel);
@@ -119,7 +125,11 @@ namespace XgagWebsite.Controllers
             viewModel.LastRanking = DbContext.PeopleRanking
                 .Where(pr => pr.RankType == voteType)
                 .OrderBy(pr => pr.Rank)
-                .Select(pr => pr)
+                .ToList();
+            viewModel.TopPeople = DbContext.People
+                .OrderByDescending(p => p.Votes.Count(v => v.VoteType == voteType))
+                .Where(p => p.Votes.Count(v => v.VoteType == voteType) > 0)
+                .Take(ConfigurationHelper.Instance.RankingPeopleCount)
                 .ToList();
 
             return View("ShitList", viewModel);
@@ -145,41 +155,53 @@ namespace XgagWebsite.Controllers
             {
                 var personId = shitRanking[i];
                 var person = db.People.First(p => p.PersonId == personId);
-                if (i < ConfigurationHelper.Instance.XPRewardsCount)
+                var score = person.Votes.Count(v => v.VoteType == VoteType.Down);
+                if (score > 0)
                 {
-                    person.DownExperience +=
-                        ConfigurationHelper.Instance.BaseXP - i * ConfigurationHelper.Instance.XPMultiplier;
-                }
+                    var xpGain = ConfigurationHelper.Instance.BaseXP - i * ConfigurationHelper.Instance.XPMultiplier;
+                    if (i < ConfigurationHelper.Instance.XPRewardsCount)
+                    {
+                        person.DownExperience += xpGain;
+                    }
 
-                var rank = db.PeopleRanking.Create();
-                rank.Person = person;
-                rank.Rank = i + 1;
-                rank.RankType = VoteType.Down;
-                rank.Score = person.Votes.Count(v => v.VoteType == VoteType.Down);
-                db.PeopleRanking.Add(rank);
+                    var rank = db.PeopleRanking.Create();
+                    rank.Person = person;
+                    rank.Rank = i + 1;
+                    rank.RankType = VoteType.Down;
+                    rank.Score = score;
+                    rank.ExperienceGain = xpGain;
+                    db.PeopleRanking.Add(rank); 
+                }
             }
 
             for (int i = 0; i < goodguyRanking.Count(); i++)
             {
-                var personId = shitRanking[i];
+                var personId = goodguyRanking[i];
                 var person = db.People.First(p => p.PersonId == personId);
-                if (i < ConfigurationHelper.Instance.XPRewardsCount)
+                var score = person.Votes.Count(v => v.VoteType == VoteType.Up);
+                if (score > 0)
                 {
-                    person.UpExperience +=
-                        ConfigurationHelper.Instance.BaseXP - i * ConfigurationHelper.Instance.XPMultiplier;
-                }
+                    var xpGain = ConfigurationHelper.Instance.BaseXP - i * ConfigurationHelper.Instance.XPMultiplier;
+                    if (i < ConfigurationHelper.Instance.XPRewardsCount)
+                    {
+                        person.UpExperience += xpGain;
+                    }
 
-                var rank = db.PeopleRanking.Create();
-                rank.Person = person;
-                rank.Rank = i + 1;
-                rank.RankType = VoteType.Up;
-                rank.Score = person.Votes.Count(v => v.VoteType == VoteType.Up);
-                db.PeopleRanking.Add(rank);
+                    var rank = db.PeopleRanking.Create();
+                    rank.Person = person;
+                    rank.Rank = i + 1;
+                    rank.RankType = VoteType.Up;
+                    rank.Score = score;
+                    rank.ExperienceGain = xpGain;
+                    db.PeopleRanking.Add(rank); 
+                }
             }
 
             var history = db.RankingHistory.Create();
             history.RankingDateTime = DateTime.Now;
             db.RankingHistory.Add(history);
+            db.PeopleVotes.RemoveRange(db.PeopleVotes.Select(pv => pv));
+            db.UsersDailyVotes.RemoveRange(db.UsersDailyVotes.Select(dv => dv));
             db.SaveChanges();
         }
     }

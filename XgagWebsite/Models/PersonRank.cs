@@ -19,5 +19,7 @@ namespace XgagWebsite.Models
         public VoteType RankType { get; set; }
 
         public int Score { get; set; }
+
+        public int ExperienceGain { get; set; }
     }
 }

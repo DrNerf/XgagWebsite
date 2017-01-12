@@ -12,5 +12,7 @@ namespace XgagWebsite.ViewModels
         public DateTime? LastRankingDateTime { get; set; }
 
         public List<PersonRank> LastRanking { get; set; }
+
+        public List<Person> TopPeople { get; set; }
     }
 }

@@ -22,5 +22,8 @@ namespace XgagWebsite.AjaxResponses
 
         [JsonProperty(PropertyName = "imageUrl")]
         public string ImageUrl { get; set; }
+
+        [JsonProperty(PropertyName = "experience")]
+        public int Experience { get; set; }
     }
 }

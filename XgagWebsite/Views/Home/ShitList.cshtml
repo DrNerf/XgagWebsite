@@ -5,52 +5,223 @@
 @{
     ViewBag.Title = Model.PageType == VoteType.Down ? "Shit List" : "Good Guy List";
 }
+
+
 <div class="row">
-    @if (Model.PageType == VoteType.Down)
-    {
-        <h2 class="pull-left">Top shitbags for this week:</h2>
-    }
-    else
-    {
-        <h2 class="pull-left">Top helping bros for this week:</h2>
-    }
-    <h3 class="pull-right">
-        Latest ranking on:
-        @(Model.LastRankingDateTime.HasValue ? Model.LastRankingDateTime.Value.ToString() : "No ranking yet")
-    </h3>
-</div>
-<div class="row">
-    <div>
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr class="person-name">
-                    <th>Rank</th>
-                    <th></th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    @if (Model.PageType == VoteType.Down)
-                    {
-                        <th>Shits given</th>
-                    }
-                    else
-                    {
-                        <th>Salutes given</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var person in Model.LastRanking)
-                {
-                    <tr class="person-name">
-                        <td>@person.Rank</td>
-                        <td><img class="person-image" src="@person.Person.Image" /></td>
-                        <td>@person.Person.FirstName</td>
-                        <td>@person.Person.LastName</td>
-                        <td>@person.Score</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <span class="glyphicon glyphicon-tags"></span> &nbsp;
+                    Last week ranking
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        @if (Model.PageType == VoteType.Down)
+                        {
+                            <h2 class="pull-left">Top douchebags for last week:</h2>
+                        }
+                        else
+                        {
+                            <h2 class="pull-left">Top helping bros for last week:</h2>
+                        }
+                        <h3 class="pull-right">
+                            Latest ranking on:
+                            @(Model.LastRankingDateTime.HasValue ? Model.LastRankingDateTime.Value.ToString() : "No ranking yet")
+                        </h3>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr class="person-name">
+                                        <th>Rank</th>
+                                        <th></th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        @if (Model.PageType == VoteType.Down)
+                                        {
+                                            <th>Shits given</th>
+                                        }
+                                        else
+                                        {
+                                            <th>Salutes given</th>
+                                        }
+                                        <th>XP Gained</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var person in Model.LastRanking)
+                                    {
+                                        <tr class="person-name">
+                                            <td>@person.Rank</td>
+                                            <td><img class="person-image" src="@person.Person.Image" /></td>
+                                            <td>@person.Person.FirstName</td>
+                                            <td>@person.Person.LastName</td>
+                                            <td>@person.Score</td>
+                                            <td>@person.ExperienceGain</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+                <a role="button" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <span class="glyphicon glyphicon-list"></span> &nbsp;
+                    Current ranking
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        @if (Model.PageType == VoteType.Down)
+                        {
+                            <h2 class="pull-left">Top douchebags for this week:</h2>
+                        }
+                        else
+                        {
+                            <h2 class="pull-left">Top helping bros for this week:</h2>
+                        }
+                    </div>
+                    <div class="row">
+                        <div>
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr class="person-name">
+                                        <th></th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        @if (Model.PageType == VoteType.Down)
+                                        {
+                                            <th>Shits given</th>
+                                        }
+                                        else
+                                        {
+                                            <th>Salutes given</th>
+                                        }
+                                        <th>XP</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="foreach: topPeople">
+                                    <tr class="person-name">
+                                        <td>
+                                            <img data-bind="attr: {src: imageUrl}" class="person-image" />
+                                        </td>
+                                        <td data-bind="text: $data.firstName"></td>
+                                        <td data-bind="text: $data.lastName"></td>
+                                        <td data-bind="text: $data.votes"></td>
+                                        <td data-bind="text: $data.experience"></td>
+                                        <td>
+                                            @if (Model.PageType == VoteType.Down)
+                                            {
+                                                <button class="btn btn-danger" data-bind="click: $parent.votePerson">
+                                                    <span class="glyphicon glyphicon-thumbs-down"></span>
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-success" data-bind="click: $parent.votePerson">
+                                                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                                                </button>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree">
+            <h4 class="panel-title">
+                <a role="button" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <span class="glyphicon glyphicon-list"></span> &nbsp;
+                    Current ranking by experience
+                </a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+            <div class="panel-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        @if (Model.PageType == VoteType.Down)
+                        {
+                            <h2 class="pull-left">Top douchebags by XP:</h2>
+                        }
+                        else
+                        {
+                            <h2 class="pull-left">Top helping bros by XP:</h2>
+                        }
+                    </div>
+                    <div class="row">
+                        <div>
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr class="person-name">
+                                        <th></th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        @if (Model.PageType == VoteType.Down)
+                                        {
+                                            <th>Shits given</th>
+                                        }
+                                        else
+                                        {
+                                            <th>Salutes given</th>
+                                        }
+                                        <th>XP</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="foreach: topXPPeople">
+                                    <tr class="person-name">
+                                        <td>
+                                            <img data-bind="attr: {src: imageUrl}" class="person-image" />
+                                        </td>
+                                        <td data-bind="text: $data.firstName"></td>
+                                        <td data-bind="text: $data.lastName"></td>
+                                        <td data-bind="text: $data.votes"></td>
+                                        <td data-bind="text: $data.experience"></td>
+                                        <td>
+                                            @if (Model.PageType == VoteType.Down)
+                                            {
+                                                <button class="btn btn-danger" data-bind="click: $parent.votePerson">
+                                                    <span class="glyphicon glyphicon-thumbs-down"></span>
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-success" data-bind="click: $parent.votePerson">
+                                                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                                                </button>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -81,7 +252,7 @@
             Search
         </button>
     </div>
-    <div class="col-lg-8">
+    <div class="col-lg-8" style="max-height:500px !important; overflow:auto;">
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr class="person-name">
@@ -96,6 +267,7 @@
                     {
                         <th>Salutes given</th>
                     }
+                    <th>XP</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -107,6 +279,7 @@
                     <td data-bind="text: $data.firstName"></td>
                     <td data-bind="text: $data.lastName"></td>
                     <td data-bind="text: $data.votes"></td>
+                    <td data-bind="text: $data.experience"></td>
                     <td>
                         @if (Model.PageType == VoteType.Down)
                         {
@@ -132,10 +305,13 @@
     <script>
         var vm = {
             people: ko.observableArray(),
+            topPeople: ko.observableArray(),
+            topXPPeople: ko.observableArray(),
             listType: ko.observable(@((int)Model.PageType)),
             firstName: ko.observable(),
             lastName: ko.observable(),
             isBusy: ko.observable(false),
+            isSearchOpened: ko.observable(false),
             searchPeople: function () {
                 vm.isBusy(true);
                 var searchParams = {
@@ -146,7 +322,6 @@
 
                 $.get("/People/Search", searchParams, function (data) {
                     vm.people(data);
-                    console.log(vm.people());
                     vm.isBusy(false);
                 });
             },
@@ -163,7 +338,12 @@
                         return;
                     }
                     if (data.isSuccess) {
-                        vm.searchPeople();
+                        if (vm.isSearchOpened()) {
+                            vm.searchPeople();
+                        }
+
+                        vm.loadTopXPPeople();
+                        vm.loadTopPeople();
                         if (vm.listType() == -1) {
                             toastr["success"]("Salt delivered successfully to " + person.firstName + " " + person.lastName, "Salty!");
                         } else {
@@ -176,14 +356,42 @@
                     toastr["error"]("Whoops. Something went on fire...", "Whoops");
                 });
             },
+            loadTopPeople: function () {
+                var paramsData = {
+                    voteType: vm.listType
+                };
+                $.get("/People/GetTopPeople", paramsData, function (data) {
+                    if (data) {
+                        vm.topPeople(data);
+                    }
+                }).error(function () {
+                    toastr["error"]("Could not load top people for this week.", "Whoops");
+                });
+            },
+            loadTopXPPeople: function () {
+                var paramsData = {
+                    voteType: vm.listType
+                };
+                $.get("/People/GetTopXPPeople", paramsData, function (data) {
+                    if (data) {
+                        vm.topXPPeople(data);
+                    }
+                }).error(function () {
+                    toastr["error"]("Could not load top experienced people for this week.", "Whoops");
+                });
+            }
         };
 
         ko.applyBindings(vm);
 
         $(function () {
+            vm.loadTopPeople();
+            vm.loadTopXPPeople();
+
             $('#open-search-form').click(function () {
                 $('#search-form').show('slow');
                 $(this).hide('slow');
+                vm.isSearchOpened(true);
             });
         });
     </script>    

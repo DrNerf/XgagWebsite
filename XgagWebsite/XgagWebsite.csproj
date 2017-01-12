@@ -214,6 +214,10 @@
     <Compile Include="Migrations\201701112117090_ScoreAddedToRanking.Designer.cs">
       <DependentUpon>201701112117090_ScoreAddedToRanking.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701122207493_ExperienceGainAdded.cs" />
+    <Compile Include="Migrations\201701122207493_ExperienceGainAdded.Designer.cs">
+      <DependentUpon>201701122207493_ExperienceGainAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -332,6 +336,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701112117090_ScoreAddedToRanking.resx">
       <DependentUpon>201701112117090_ScoreAddedToRanking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701122207493_ExperienceGainAdded.resx">
+      <DependentUpon>201701122207493_ExperienceGainAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
