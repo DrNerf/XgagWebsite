@@ -177,6 +177,7 @@
     <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Enums\VoteType.cs" />
+    <Compile Include="Extensions\IIdentityExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -299,6 +300,7 @@
     <Content Include="Views\Posts\View.cshtml" />
     <Content Include="Views\Manage\UpdateSubscriptions.cshtml" />
     <Content Include="Views\Home\ShitList.cshtml" />
+    <Content Include="Views\Shared\_RemainingVotesPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
