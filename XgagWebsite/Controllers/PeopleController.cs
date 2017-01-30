@@ -11,6 +11,7 @@ using XgagWebsite.Helpers;
 
 namespace XgagWebsite.Controllers
 {
+    [Authorize]
     public class PeopleController : BaseController
     {
         public ActionResult Search(string firstName, string lastName, VoteType voteType)
