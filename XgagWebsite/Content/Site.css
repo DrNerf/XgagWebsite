@@ -84,3 +84,19 @@ textarea {
     from { -moz-transform: rotate(0deg);}
     to { -moz-transform: rotate(360deg);}
 }
+
+.quote-row{
+    background:black;
+    padding: 15px;
+    font-family:'Segoe Script';
+    border: 1px solid #df691a;
+}
+
+.quote-author-img{
+    width:60px;
+    height:60px;
+}
+
+.inline{
+    display:inline;
+}

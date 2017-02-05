@@ -33,7 +33,8 @@ namespace XgagWebsite.Controllers
                 PersonId = r.PersonId,
                 Votes = r.Votes.Count(v => v.VoteType == voteType),
                 ImageUrl = r.Image,
-                Experience = voteType == VoteType.Down ? r.DownExperience : r.UpExperience
+                Experience = voteType == VoteType.Down ? r.DownExperience : r.UpExperience,
+                FullName = string.Format("{0} {1}", r.FirstName, r.LastName)
             });
 
             return Content(JsonConvert.SerializeObject(response), "application/json");

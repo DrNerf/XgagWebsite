@@ -3,9 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://www.naxex-tech.com/favicon.ico" type="image/x-icon" rel="shortcut icon">
+    <link href="http://www.naxex-tech.com/favicon.ico" type="image/x-icon" rel="icon">
     <title>@ViewBag.Title - Xgag</title>
     @Styles.Render("~/Content/css")
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link href="~/Content/magicsuggest-min.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -27,6 +30,12 @@
                         <a href="/Home/Index">
                             <span class="glyphicon glyphicon-home"></span>
                             Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Quotes">
+                            <span class="glyphicon glyphicon-comment"></span>
+                            Quotes
                         </a>
                     </li>
                     <li>
@@ -78,6 +87,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js'></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="~/Scripts/magicsuggest-min.js"></script>
     <script>
         toastr.options = {
             "closeButton": true,

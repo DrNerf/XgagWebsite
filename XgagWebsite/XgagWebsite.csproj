@@ -164,6 +164,7 @@
   <ItemGroup>
     <Compile Include="AjaxResponses\GenericOperationResponse.cs" />
     <Compile Include="AjaxResponses\PeopleTableItemResponse.cs" />
+    <Compile Include="AjaxResponses\QuoteItemResponse.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -176,6 +177,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
+    <Compile Include="Controllers\QuotesController.cs" />
     <Compile Include="Enums\VoteType.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -218,6 +220,18 @@
     <Compile Include="Migrations\201701122207493_ExperienceGainAdded.Designer.cs">
       <DependentUpon>201701122207493_ExperienceGainAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702021901043_QuotesTableAdded.cs" />
+    <Compile Include="Migrations\201702021901043_QuotesTableAdded.Designer.cs">
+      <DependentUpon>201702021901043_QuotesTableAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702021905266_AddedDateTimeInQuoteTable.cs" />
+    <Compile Include="Migrations\201702021905266_AddedDateTimeInQuoteTable.Designer.cs">
+      <DependentUpon>201702021905266_AddedDateTimeInQuoteTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702051347486_AddedAnonAuthor.cs" />
+    <Compile Include="Migrations\201702051347486_AddedAnonAuthor.Designer.cs">
+      <DependentUpon>201702051347486_AddedAnonAuthor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -227,6 +241,7 @@
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PersonRank.cs" />
+    <Compile Include="Models\Quote.cs" />
     <Compile Include="Models\RankingHistoryItem.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\PersonVote.cs" />
@@ -242,6 +257,8 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\checkboxes.css" />
+    <Content Include="Content\Images\profile.svg" />
+    <Content Include="Content\magicsuggest-min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -256,6 +273,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\magicsuggest-min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -299,6 +317,7 @@
     <Content Include="Views\Posts\View.cshtml" />
     <Content Include="Views\Manage\UpdateSubscriptions.cshtml" />
     <Content Include="Views\Home\ShitList.cshtml" />
+    <Content Include="Views\Quotes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -339,6 +358,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701122207493_ExperienceGainAdded.resx">
       <DependentUpon>201701122207493_ExperienceGainAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702021901043_QuotesTableAdded.resx">
+      <DependentUpon>201702021901043_QuotesTableAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702021905266_AddedDateTimeInQuoteTable.resx">
+      <DependentUpon>201702021905266_AddedDateTimeInQuoteTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702051347486_AddedAnonAuthor.resx">
+      <DependentUpon>201702051347486_AddedAnonAuthor.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

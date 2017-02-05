@@ -53,6 +53,8 @@ namespace XgagWebsite.Models
 
         public DbSet<PersonRank> PeopleRanking { get; set; }
 
+        public DbSet<Quote> Quotes { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
