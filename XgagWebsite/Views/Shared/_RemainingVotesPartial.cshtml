@@ -1,0 +1,19 @@
+﻿@using Microsoft.AspNet.Identity
+
+@if (Request.IsAuthenticated)
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a href="/Home/ShitList">
+                <span class="glyphicon glyphicon-thumbs-down"></span>
+                @HttpContext.Current.User.Identity.GetRemainingVotes(XgagWebsite.Enums.VoteType.Down)
+            </a>
+        </li>
+        <li>
+            <a href="/Home/GoodGuyList">
+                <span class="glyphicon glyphicon-thumbs-up"></span>
+                @HttpContext.Current.User.Identity.GetRemainingVotes(XgagWebsite.Enums.VoteType.Up)
+            </a>
+        </li>
+    </ul>
+}

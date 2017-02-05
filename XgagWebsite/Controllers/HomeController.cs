@@ -93,6 +93,7 @@ namespace XgagWebsite.Controllers
             return Json(new { IsSuccess = isSuccess, Message = message });
         }
 
+        [Authorize]
         public ActionResult ShitList()
         {
             var voteType = VoteType.Down;
@@ -114,6 +115,7 @@ namespace XgagWebsite.Controllers
             return View(viewModel);
         }
 
+        [Authorize]
         public ActionResult GoodGuyList()
         {
             var voteType = VoteType.Up;
