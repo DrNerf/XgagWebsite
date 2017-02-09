@@ -185,6 +185,7 @@
     </Compile>
     <Compile Include="Helpers\ConfigurationHelper.cs" />
     <Compile Include="Helpers\ImagesHelper.cs" />
+    <Compile Include="Helpers\YouTubeHelper.cs" />
     <Compile Include="Migrations\201611282023147_InitialCreate.cs" />
     <Compile Include="Migrations\201611282023147_InitialCreate.Designer.cs">
       <DependentUpon>201611282023147_InitialCreate.cs</DependentUpon>
@@ -232,6 +233,10 @@
     <Compile Include="Migrations\201702051347486_AddedAnonAuthor.cs" />
     <Compile Include="Migrations\201702051347486_AddedAnonAuthor.Designer.cs">
       <DependentUpon>201702051347486_AddedAnonAuthor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702092025065_YouTubeColumnAdded.cs" />
+    <Compile Include="Migrations\201702092025065_YouTubeColumnAdded.Designer.cs">
+      <DependentUpon>201702092025065_YouTubeColumnAdded.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -369,6 +374,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702051347486_AddedAnonAuthor.resx">
       <DependentUpon>201702051347486_AddedAnonAuthor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702092025065_YouTubeColumnAdded.resx">
+      <DependentUpon>201702092025065_YouTubeColumnAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

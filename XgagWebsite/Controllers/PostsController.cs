@@ -16,24 +16,38 @@ namespace XgagWebsite.Controllers
     {
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> Upload(string title, HttpPostedFileBase uploadImage)
+        public async Task<ActionResult> Upload(string title, HttpPostedFileBase uploadImage, string youTubeLink)
         {
-            if (string.IsNullOrEmpty(title) || uploadImage == null)
+            if (string.IsNullOrEmpty(title))
             {
-                throw new HttpException(400, "Invalid input data!");
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid input data!");
             }
-
-            var image = await ImagesHelper.SaveImageAsync(uploadImage, DbContext);
-            var owner = DbContext.Users.First(u => u.UserName == User.Identity.Name);
-            if (image == null)
-            {
-                throw new HttpException(500, "Invalid input data!");
-            }
-
             var post = DbContext.Posts.Create();
+            Image image = null;
+
+            if (uploadImage != null)
+            {
+                image = await ImagesHelper.SaveImageAsync(uploadImage, DbContext);
+                post.Image = image;
+            }
+            else
+            {
+                string html;
+                if(!YouTubeHelper.TryGetEmbedHtml(youTubeLink, out html))
+                {
+                    throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid input data!");
+                }
+                post.YouTubeLink = html;
+            }
+
+            var owner = DbContext.Users.First(u => u.UserName == User.Identity.Name);
+            if (string.IsNullOrEmpty(post.YouTubeLink) && image == null)
+            {
+                throw new HttpException((int)HttpStatusCode.InternalServerError, "Invalid input data!");
+            }
+
             post.DateCreated = DateTime.Now;
             post.Title = title;
-            post.Image = image;
             post.Owner = owner;
 
             DbContext.Posts.Add(post);

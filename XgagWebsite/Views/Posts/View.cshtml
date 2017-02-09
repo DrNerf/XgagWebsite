@@ -13,7 +13,14 @@
                     var hasUserVoted = userVote != null;
                 }
                 <h3 class="text-primary">@Model.Title</h3>
-                <img src="@(string.Format("/Images/View/{0}", Model.Image.ImageId))" class="post-image" />
+                @if (Model.Image != null)
+                {
+                    <img src="@(string.Format("/Images/View/{0}", Model.Image.ImageId))" class="post-image" />
+                }
+                else
+                {
+                    <text>@Html.Raw(Model.YouTubeLink)</text>
+                }
                 <div>
                     <span class="text-info text">Score: <span id="score-@(Model.PostId)">@Model.CalculateScore()</span></span>
                 </div>

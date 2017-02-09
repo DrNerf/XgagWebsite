@@ -15,8 +15,17 @@
                 var hasUserVoted = userVote != null;
 
                 <div class="row post-row">
-                    <h3 class="text-primary">@post.Title</h3>
-                    <a href="/Posts/View/@(post.PostId)"><img src="@(string.Format("/Images/View/{0}", post.Image.ImageId))" class="post-image" /></a>
+                    <h3 class="text-primary"><a href="/Posts/View/@(post.PostId)">@post.Title</a></h3>
+                        @if (post.Image != null)
+                        {
+                            <a href="/Posts/View/@(post.PostId)">
+                                <img src="@(string.Format("/Images/View/{0}", post.Image.ImageId))" class="post-image" />
+                            </a>
+                        }
+                        else
+                        {
+                           <text>@Html.Raw(post.YouTubeLink)</text>
+                        }
                     <div>
                         <span class="text-info text">Score: <span id="score-@(post.PostId)">@post.CalculateScore()</span></span>
                     </div>

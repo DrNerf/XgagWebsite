@@ -27,6 +27,8 @@ namespace XgagWebsite.Models
 
         public virtual ICollection<Vote> Votes { get; set; }
 
+        public string YouTubeLink { get; set; }
+
         public int CalculateScore()
         {
             return Votes?.Select(v => v.Type).Cast<int>().Sum() ?? 0;
