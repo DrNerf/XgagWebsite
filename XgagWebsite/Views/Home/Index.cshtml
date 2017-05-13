@@ -1,7 +1,7 @@
 ﻿@using XgagWebsite.Models
 @using Microsoft.AspNet.Identity
 @using XgagWebsite.Helpers
-@model List<Post>
+@model XgagWebsite.ViewModels.IndexViewModel
 @{
     ViewBag.Title = "Home Page";
 }
@@ -9,68 +9,105 @@
 <div class="jumbotron">
     <div class="container">
         <div class="col-lg-8">
-            @foreach (var post in Model)
+            @foreach (var post in Model.Posts)
             {
                 var userVote = Request.IsAuthenticated ? post.Votes.FirstOrDefault(v => v.Voter.UserName == User.Identity.GetUserName()) : null;
                 var hasUserVoted = userVote != null;
 
-                <div class="row post-row">
-                    <h3 class="text-primary"><a href="/Posts/View/@(post.PostId)">@post.Title</a></h3>
-                        @if (post.Image != null)
+            <div class="row post-row">
+                <h3 class="text-primary"><a href="/Posts/View/@(post.PostId)">@post.Title</a></h3>
+                @if (post.Image != null)
                         {
-                            <a href="/Posts/View/@(post.PostId)">
-                                <img src="@(string.Format("/Images/View/{0}", post.Image.ImageId))" class="post-image" />
-                            </a>
+                    <a href="/Posts/View/@(post.PostId)">
+                        <img src="@(string.Format("/Images/View/{0}", post.Image.ImageId))" class="post-image" />
+                    </a>
                         }
                         else
                         {
-                           <text>@Html.Raw(post.YouTubeLink)</text>
+                    <text>@Html.Raw(post.YouTubeLink)</text>
                         }
-                    <div>
-                        <span class="text-info text">Score: <span id="score-@(post.PostId)">@post.CalculateScore()</span></span>
-                    </div>
-                    <div>
-                        <button onclick="vote(@(post.PostId), 1)"
-                                data-unvote="@(hasUserVoted)" 
-                                id="upvote-@(post.PostId)" 
-                                class="btn 
-                                    @(hasUserVoted && (int)userVote.Type > 0 ? "btn-success" : hasUserVoted ? "disabled btn-primary" : "btn-primary") 
+                <div>
+                    <span class="text-info text">Score: <span id="score-@(post.PostId)">@post.CalculateScore()</span></span>
+                </div>
+                <div>
+                    <button onclick="vote(@(post.PostId), 1)"
+                            data-unvote="@(hasUserVoted)"
+                            id="upvote-@(post.PostId)"
+                            class="btn
+                                    @(hasUserVoted && (int)userVote.Type > 0 ? "btn-success" : hasUserVoted ? "disabled btn-primary" : "btn-primary")
                                     @(!Request.IsAuthenticated ? "disabled" : "")">
-                            <span class="glyphicon glyphicon-arrow-up"></span>
-                        </button>
-                        <button onclick="vote(@(post.PostId), -1)" 
-                                data-unvote="@(hasUserVoted)"
-                                id="downvote-@(post.PostId)" 
-                                class="btn 
-                                    @(hasUserVoted && (int)userVote.Type < 0 ? "btn-danger" : hasUserVoted ? "disabled btn-primary" : "btn-primary") 
+                        <span class="glyphicon glyphicon-arrow-up"></span>
+                    </button>
+                    <button onclick="vote(@(post.PostId), -1)"
+                            data-unvote="@(hasUserVoted)"
+                            id="downvote-@(post.PostId)"
+                            class="btn
+                                    @(hasUserVoted && (int)userVote.Type < 0 ? "btn-danger" : hasUserVoted ? "disabled btn-primary" : "btn-primary")
                                     @(!Request.IsAuthenticated ? "disabled" : "")">
-                            <span class="glyphicon glyphicon-arrow-down"></span>
-                        </button>
-                        <a href="/Posts/View/@(post.PostId)">
-                            <button class="btn 
+                        <span class="glyphicon glyphicon-arrow-down"></span>
+                    </button>
+                    <a href="/Posts/View/@(post.PostId)">
+                        <button class="btn
                                     @(post.AnyNewComments() ? "btn-success" : "btn-primary")
                                     @(!Request.IsAuthenticated ? "disabled" : "")">
-                                <span class="glyphicon glyphicon-comment"></span>
-                                <span style="font-weight:bold;">@(post.CountComments())</span>
-                            </button>
-                        </a>
-                        <span class="pull-right text-info">Posted at: <span>@post.DateCreated</span></span>
-                    </div>
-                    <hr />
+                            <span class="glyphicon glyphicon-comment"></span>
+                            <span style="font-weight:bold;">@(post.CountComments())</span>
+                        </button>
+                    </a>
+                    <span class="pull-right text-info">Posted at: <span>@post.DateCreated</span></span>
                 </div>
+                <hr />
+            </div>
             }
-            @if (Model.Count() == ConfigurationHelper.Instance.PageSize)
+            @if (Model.Posts.Count() == ConfigurationHelper.Instance.PageSize)
             {
-                <div class="row">
-                    <button class="btn btn-info btn-block" id="next-page" data-current-page="@(Request.Params["page"] ?? "1")">
-                        More sh*t <span class="glyphicon glyphicon-arrow-right"></span>
-                    </button>
-                </div>
+            <div class="row">
+                <button class="btn btn-info btn-block" id="next-page" data-current-page="@(Request.Params["page"] ?? "1")">
+                    More sh*t <span class="glyphicon glyphicon-arrow-right"></span>
+                </button>
+            </div>
             }
         </div>
-        @*<div class="col-lg-4">
-            <h2 class="text-primary">Top posts:</h2>
-        </div>*@
+        <div class="col-lg-4">
+            <div class="container">
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Top contributors:</div>
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                @foreach (var contributor in Model.TopContributors)
+                                {
+                                    <li class="list-group-item">
+                                        @string.Format(
+                                        "{0} with {1} posts!",
+                                        contributor.UserName,
+                                        contributor.Posts.Count())
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Top posts:</div>
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                @foreach (var post in Model.TopPosts)
+                                {
+                                    <li class="list-group-item">
+                                        @string.Format(
+                                        "{0} with {1} points!",
+                                        post.Title,
+                                        post.Votes.Sum(v => (int)v.Type))
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

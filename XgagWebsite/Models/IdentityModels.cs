@@ -31,6 +31,8 @@ namespace XgagWebsite.Models
         public bool IsSubscribedForComments { get; set; }
 
         public virtual ICollection<UserDailyVote> DailyVotes { get; set; }
+
+        public virtual ICollection<Post> Posts { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

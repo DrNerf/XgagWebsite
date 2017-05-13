@@ -204,5 +204,20 @@ namespace XgagWebsite.Helpers
             }
         }
 
+        private int? m_TopStatsCount;
+
+        public int TopStatsCount
+        {
+            get
+            {
+                if (!m_TopStatsCount.HasValue)
+                {
+                    m_TopStatsCount = int.Parse(ConfigurationManager.AppSettings[nameof(TopStatsCount)]);
+                }
+
+                return m_TopStatsCount.Value;
+            }
+        }
+
     }
 }

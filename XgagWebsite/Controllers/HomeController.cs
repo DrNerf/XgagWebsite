@@ -34,8 +34,23 @@ namespace XgagWebsite.Controllers
                 .Skip(pageSize * ((page ?? 1) - 1))
                 .Take(pageSize)
                 .ToList();
+            var topStatsCount = ConfigurationHelper.Instance.TopStatsCount;
+            var topContributors = DbContext.Users
+                .OrderByDescending(u => u.Posts.Count())
+                .Take(topStatsCount)
+                .ToList();
+            var topPosts = DbContext.Posts
+                .OrderByDescending(p => p.Votes.Sum(v => (int)v.Type))
+                .Take(topStatsCount)
+                .ToList();
+            var viewModel = new ViewModels.IndexViewModel()
+            {
+                Posts = posts,
+                TopContributors = topContributors,
+                TopPosts = topPosts
+            };
 
-            return View(posts);
+            return View(viewModel);
         }
 
         public ActionResult About()
