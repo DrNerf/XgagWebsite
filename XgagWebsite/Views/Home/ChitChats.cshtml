@@ -1,44 +1,84 @@
-﻿@model IEnumerable<XgagWebsite.Models.ChitChat>
+﻿@using Microsoft.AspNet.Identity
+
+@model IEnumerable<XgagWebsite.Models.ChitChat>
 @{
     ViewBag.Title = "Chit - Chats";
 }
 
 <div class="jumbotron">
     <div class="container">
-        <div class="col-lg-8">
-            @foreach (var chitChat in Model)
-            {
-                <div class="row">
-                    <div class="panel @chitChat.DangerType.GetBootstrapClass()">
-                        <div class="panel-heading">
-                            <div class="panel-title">
-                                @chitChat.Content
+        <div class="row">
+            <div class="col-lg-8">
+                @foreach (var chitChat in Model)
+                {
+                    var userVote = chitChat.Votes.FirstOrDefault(v => v.Voter.UserName == User.Identity.GetUserName());
+                    var hasUserVoted = userVote != null;
+                    var score = chitChat.Votes.Sum(v => (int)v.VoteType);
+                    var labelClass = string.Empty;
+                    if (score > 0)
+                    {
+                        labelClass = "label-success";
+                    }
+                    else
+                    {
+                        if (score < 0)
+                        {
+                            labelClass = "label-danger";
+                        }
+                        else
+                        {
+                            labelClass = "label-warning";
+                        }
+                    }
+
+                    <div class="row">
+                        <div class="panel @chitChat.DangerType.GetBootstrapClass()">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    @chitChat.Content
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <span class="pull-left
+                                        label
+                                        @labelClass"
+                                      style="font-size:14px;">
+                                    <span>Approval rate: </span>
+                                    <span id="score-@(chitChat.ChitChatId)">@score</span>
+                                </span>
+                                <span class="pull-right">
+                                    <button class="btn
+                                                @(hasUserVoted && (int)userVote.VoteType > 0 ? "btn-primary" : hasUserVoted ? "disabled btn-success" : "btn-success")"
+                                            onclick="vote(@(chitChat.ChitChatId), 1)"
+                                            data-unvote="@(hasUserVoted)"
+                                            id="upvote-@(chitChat.ChitChatId)">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </button>
+                                    <button class="btn
+                                                @(hasUserVoted && (int)userVote.VoteType < 0 ? "btn-primary" : hasUserVoted ? "disabled btn-danger" : "btn-danger")"
+                                            onclick="vote(@(chitChat.ChitChatId), -1)"
+                                            data-unvote="@(hasUserVoted)"
+                                            id="downvote-@(chitChat.ChitChatId)">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </span>
                             </div>
                         </div>
-                        <div class="panel-body">
-                            <span class="pull-left label label-primary">
-                                @string.Format("Approval rate: {0}", chitChat.Votes.Sum(v => (int)v.VoteType))
-                            </span>
-                            <span class="pull-right">
-                                <button class="btn btn-success">
-                                    <span class="glyphicon glyphicon-ok"></span>
-                                </button>
-                                <button class="btn btn-danger">
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                </button>
-                            </span>
-                        </div>
                     </div>
-                </div>
-            }
-        </div>
-        <div class="col-lg-4">
-            <button class="btn btn-primary btn-block"
-                    data-toggle="modal"
-                    data-target="#createChitChatModal">
-                <span class="glyphicon glyphicon-bullhorn"></span>
-                Add new chit-chat
-            </button>
+                    }
+            </div>
+            <div class="col-lg-4">
+                <button class="btn btn-primary btn-block"
+                        data-toggle="modal"
+                        data-target="#createChitChatModal">
+                    <span class="glyphicon glyphicon-bullhorn"></span>
+                    Add new chit-chat
+                </button>
+                <center>
+                    <span class="label label-primary"
+                          style="font-size:16px;">Xgag protects your identity!</span>
+                </center>
+            </div>
         </div>
     </div>
 </div>
@@ -54,14 +94,28 @@
                 </h4>
             </div>
             <div class="modal-body">
-                ...
+                <div>
+                    <textarea placeholder="Content..."
+                              class="form-control"
+                              id="content"></textarea>
+                </div>
+                <br />
+                <div>
+                    <select class="form-control"
+                            id="dangerType">
+                        <option disabled selected>Type...</option>
+                        <option value="0">General stuff</option>
+                        <option value="1">Big news</option>
+                        <option value="2">Shit is going down</option>
+                    </select>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     <span class="glyphicon glyphicon-remove-sign"></span>
                     Close
                 </button>
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-primary" id="saveBtn">
                     <span class="glyphicon glyphicon-plus-sign"></span>
                     Save
                 </button>
@@ -70,3 +124,38 @@
     </div>
 </div>
 
+@section Scripts{
+    <script src="~/Scripts/VotingFunctions.js"></script>
+
+    <script>
+
+        $(function () {
+            configureVoting(
+                "/ChitChat/Vote",
+                "/ChitChat/Unvote",
+                true);
+
+            $('#saveBtn').click(function () {
+                var content = $('#content').val();
+                var dangerType = $('#dangerType').val();
+                var request = {
+                    Content: content,
+                    DangerType: dangerType
+                }
+
+                if (content && dangerType) {
+                    $.post("/ChitChat/CreateChitChat", request, function (data) {
+                        if (data.isSuccess) {
+                            location.reload();
+                        }
+                        else {
+                            toastr["error"]("The server done goofed.", "Whooops");
+                        }
+                    });
+                } else {
+                    toastr["error"]("Sorry something is wrong, check that you filled all the fields.", "Whooops");
+                }
+            });
+        });
+    </script>
+}
