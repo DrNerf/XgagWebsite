@@ -1,0 +1,72 @@
+﻿@model IEnumerable<XgagWebsite.Models.ChitChat>
+@{
+    ViewBag.Title = "Chit - Chats";
+}
+
+<div class="jumbotron">
+    <div class="container">
+        <div class="col-lg-8">
+            @foreach (var chitChat in Model)
+            {
+                <div class="row">
+                    <div class="panel @chitChat.DangerType.GetBootstrapClass()">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                @chitChat.Content
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <span class="pull-left label label-primary">
+                                @string.Format("Approval rate: {0}", chitChat.Votes.Sum(v => (int)v.VoteType))
+                            </span>
+                            <span class="pull-right">
+                                <button class="btn btn-success">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                </button>
+                                <button class="btn btn-danger">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-lg-4">
+            <button class="btn btn-primary btn-block"
+                    data-toggle="modal"
+                    data-target="#createChitChatModal">
+                <span class="glyphicon glyphicon-bullhorn"></span>
+                Add new chit-chat
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createChitChatModal" tabindex="-1" role="dialog" aria-labelledby="createChitChatModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="createChitChatModalLabel">
+                    <span class="glyphicon glyphicon-bullhorn"></span>
+                    Create chit-chat
+                </h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove-sign"></span>
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+

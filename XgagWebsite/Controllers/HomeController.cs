@@ -152,6 +152,16 @@ namespace XgagWebsite.Controllers
             return View("ShitList", viewModel);
         }
 
+        [Authorize]
+        public ActionResult ChitChats()
+        {
+            var chitChats = DbContext.ChitChats
+                .OrderByDescending(cc => cc.DateTimeCreated)
+                .ToList();
+
+            return View(chitChats);
+        }
+
         public void RankPeopleLists(ApplicationDbContext db)
         {
             var shitRanking = db.People

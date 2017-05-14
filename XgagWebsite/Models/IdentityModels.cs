@@ -57,6 +57,10 @@ namespace XgagWebsite.Models
 
         public DbSet<Quote> Quotes { get; set; }
 
+        public DbSet<ChitChat> ChitChats { get; set; }
+
+        public DbSet<ChitChatVote> ChitChatVotes { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
