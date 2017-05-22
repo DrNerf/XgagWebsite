@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using XgagWebsite.Enums;
 
 namespace XgagWebsite.Models
 {
@@ -17,5 +18,7 @@ namespace XgagWebsite.Models
         public DateTime DateTimeCreated { get; set; }
 
         public string AnonymousAuthor { get; set; }
+
+        public QuoteType QuoteType { get; set; }
     }
 }

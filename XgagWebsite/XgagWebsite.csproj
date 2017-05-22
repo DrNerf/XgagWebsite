@@ -180,6 +180,7 @@
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\QuotesController.cs" />
     <Compile Include="Enums\DangerType.cs" />
+    <Compile Include="Enums\QuoteType.cs" />
     <Compile Include="Enums\VoteType.cs" />
     <Compile Include="Extensions\DangerTypeExtensions.cs" />
     <Compile Include="Extensions\IIdentityExtensions.cs" />
@@ -248,6 +249,10 @@
     <Compile Include="Migrations\201705141112135_ChitChatTweaks.cs" />
     <Compile Include="Migrations\201705141112135_ChitChatTweaks.Designer.cs">
       <DependentUpon>201705141112135_ChitChatTweaks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705221827565_QuoteTypeAdded.cs" />
+    <Compile Include="Migrations\201705221827565_QuoteTypeAdded.Designer.cs">
+      <DependentUpon>201705221827565_QuoteTypeAdded.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -340,6 +345,7 @@
     <Content Include="Views\Quotes\Index.cshtml" />
     <Content Include="Views\Shared\_RemainingVotesPartial.cshtml" />
     <Content Include="Views\Home\ChitChats.cshtml" />
+    <Content Include="Views\Quotes\Code.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -399,6 +405,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705141112135_ChitChatTweaks.resx">
       <DependentUpon>201705141112135_ChitChatTweaks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705221827565_QuoteTypeAdded.resx">
+      <DependentUpon>201705221827565_QuoteTypeAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

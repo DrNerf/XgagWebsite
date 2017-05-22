@@ -1,0 +1,156 @@
+﻿
+@{
+    ViewBag.Title = "Code";
+}
+
+<div class="jumbotron">
+    <div class="container">
+        <div class="col-lg-8" data-bind="foreach: allQuotes">
+            @*<div class="row quote-row">
+                <h1 class="inline">"</h1>
+                <h2 data-bind="text: $data.text"
+                    class="inline"></h2>
+                <h1 class="inline">"</h1>
+                <h3 class="pull-right">
+                    <span>~</span>
+                    <span data-bind="text: $data.author"></span>
+                    <img data-bind="visible: $data.authorImage != null, attr: { src: $data.authorImage }"
+                         class="quote-author-img img-circle" />
+                    <img data-bind="visible: $data.authorImage == null"
+                         src="~/Content/Images/profile.svg"
+                         class="quote-author-img img-circle" />
+                </h3>
+            </div>*@
+            <div class="row">
+                <pre class="prettyprint linenums"
+                     data-bind="text: $data.text">
+                </pre>
+                <h3 class="pull-right"
+                    style="color:#ff7f2a;">
+                    <span>//The maestro:</span>
+                    <span data-bind="text: $data.author"></span>
+                    <img data-bind="visible: $data.authorImage != null, attr: { src: $data.authorImage }"
+                         class="quote-author-img img-circle" />
+                    <img data-bind="visible: $data.authorImage == null"
+                         src="~/Content/Images/profile.svg"
+                         class="quote-author-img img-circle" />
+                </h3>
+            </div>
+            <hr />
+        </div>
+        <div class="col-lg-4">
+            @if (Request.IsAuthenticated)
+            {
+                <button class="btn btn-primary btn-block"
+                        data-toggle="modal"
+                        data-target="#quoteModal">
+                    <span class="glyphicon glyphicon-align-left"></span>
+                    Post a new masterpiece!
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="quoteModal" tabindex="-1" role="dialog" aria-labelledby="quoteModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="quoteModalLabel">New code quote</h4>
+            </div>
+            <div class="modal-body">
+                <label class="label label-warning"
+                       style="font-size:18px;">Please format the tabs of the code.</label>
+                <br />
+                <br />
+                <textarea class="form-control form-control-fix"
+                          style="height:500px;"
+                          data-bind="value: quoteText"
+                          placeholder="Text..."></textarea>
+                <br />
+                <div id="authors"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="close-modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bind="click: createQuote">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        var authorsComboBox;
+        var vm = {
+            quoteText: ko.observable(),
+            quoteAuthor: function () {
+                return authorsComboBox.getSelection()[0];
+            },
+            clearQuoteAuthor: function () {
+                authorsComboBox.clear();
+            },
+            allQuotes: ko.observableArray(),
+            allAuthors: ko.observableArray(),
+            createQuote: function () {
+                var requestData = {
+                    text: vm.quoteText(),
+                    authorId: vm.quoteAuthor().personId,
+                    type: 1
+                };
+                $.post("/Quotes/Create", requestData, function (data) {
+                    if (data.isSuccess) {
+                        toastr["success"]("Quote created!.", "ʕ•ᴥ•ʔ");
+                        vm.loadAllQuotes();
+                        $('#close-modal').click();
+                        vm.quoteText('');
+                        vm.clearQuoteAuthor();
+                    }
+                }).error(function () {
+                    toastr["error"]("Ups, something went on fire.", "ʕ•ᴥ•ʔ");
+                });
+            },
+            loadInitialData: function () {
+                vm.loadAllAuthors();
+                vm.loadAllQuotes();
+            },
+            loadAllAuthors: function () {
+                var searchParams = {
+                    voteType: 1
+                };
+
+                $.get("/People/Search", searchParams, function (data) {
+                    vm.allAuthors(data);
+                    vm.loadComboBox();
+                });
+            },
+            loadComboBox: function () {
+                authorsComboBox = $('#authors').magicSuggest({
+                    placeholder: 'Author...',
+                    data: vm.allAuthors(),
+                    valueField: 'personId',
+                    displayField: 'fullName',
+                    maxSelection: 1,
+                    renderer: function (data) {
+                        return '<img class="img-circle" width="40" height="40" src="' + data.imageUrl + '" /> ' +
+                            '<b style="color:#df691a;">' + data.firstName + ' ' + data.lastName + '</b>';
+                    }
+                });
+            },
+            loadAllQuotes: function () {
+                $.get("/Quotes/GetAll?type=1", function (data) {
+                    vm.allQuotes(data);
+                    PR.prettyPrint();
+                });
+            },
+        };
+
+        ko.applyBindings(vm);
+        vm.loadInitialData();
+
+        $(function () {
+
+        });
+    </script>
+}

@@ -26,16 +26,22 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>
+                    @*<li>
                         <a href="/Home/Upload">
                             <span class="glyphicon glyphicon-upload"></span>
                             Upload
                         </a>
-                    </li>
+                    </li>*@
                     <li>
                         <a href="/Quotes">
                             <span class="glyphicon glyphicon-comment"></span>
                             Quotes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Quotes/Code">
+                            <span class="glyphicon glyphicon-align-left"></span>
+                            Code Quotes
                         </a>
                     </li>
                     <li>
@@ -88,6 +94,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js'></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=sunburst"></script>
     <script src="~/Scripts/magicsuggest-min.js"></script>
     <script>
         toastr.options = {
