@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using XgagWebsite.AjaxResponses;
+using XgagWebsite.Enums;
 using XgagWebsite.Models;
 
 namespace XgagWebsite.Controllers
@@ -16,15 +17,24 @@ namespace XgagWebsite.Controllers
             return View();
         }
 
-        public ActionResult GetAll()
+        public ActionResult Code()
         {
-            var quotes = DbContext.Quotes.OrderByDescending(q => q.DateTimeCreated).ToList();
+            return View();
+        }
+
+        public ActionResult GetAll(QuoteType type = QuoteType.Normal)
+        {
+            var quotes = DbContext.Quotes
+                .Where(q => q.QuoteType == type)
+                .OrderByDescending(q => q.DateTimeCreated)
+                .ToList();
             return JsonResult(quotes.Select(q => QuoteItemResponse.Transform(q)));
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> Create(string text, string authorId)
+        [ValidateInput(false)]
+        public async Task<ActionResult> Create(string text, string authorId, QuoteType type = QuoteType.Normal)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -50,6 +60,7 @@ namespace XgagWebsite.Controllers
             newQuote.Text = text;
             newQuote.Owner = GetCurrentUser();
             newQuote.DateTimeCreated = DateTime.Now;
+            newQuote.QuoteType = type;
             var dbQuote = DbContext.Quotes.Add(newQuote);
             await DbContext.SaveChangesAsync();
 
