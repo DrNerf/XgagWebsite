@@ -96,10 +96,12 @@
                                 @foreach (var post in Model.TopPosts)
                                 {
                                     <li class="list-group-item">
-                                        @string.Format(
-                                        "{0} with {1} points!",
-                                        post.Title,
-                                        post.Votes.Sum(v => (int)v.Type))
+                                        <a href="/Posts/View/@(post.PostId)">
+                                            @string.Format(
+                                                "{0} with {1} points!",
+                                                post.Title,
+                                                post.Votes.Sum(v => (int)v.Type))
+                                        </a>
                                     </li>
                                 }
                             </ul>
