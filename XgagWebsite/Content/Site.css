@@ -45,7 +45,7 @@ textarea {
 }
 
 .reply-row{
-    border-bottom:1px solid #dadada;
+    border-bottom:0px solid #dadada;
 }
 
 .comment-image{

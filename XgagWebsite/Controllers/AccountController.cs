@@ -156,7 +156,8 @@ namespace XgagWebsite.Controllers
                     UserName = model.UserName,
                     Email = model.Email,
                     IsSubscribedForNewPosts = model.IsSubscribedForNewPosts,
-                    IsSubscribedForComments = model.IsSubscribedForComments
+                    IsSubscribedForComments = model.IsSubscribedForComments,
+                    ProfilePictureUrl = "~/Content/Images/profile.svg"
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

@@ -349,6 +349,25 @@ namespace XgagWebsite.Controllers
             return RedirectToAction("UpdateSubscriptions");
         }
 
+        [Authorize]
+        public ActionResult UpdateAvatar()
+        {
+            var user = GetCurrentUser();
+
+            return View(model:user.ProfilePictureUrl);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult> UpdateAvatar(string profilePictureUrl)
+        {
+            var user = GetCurrentUser();
+
+            user.ProfilePictureUrl = profilePictureUrl;
+            await DbContext.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
