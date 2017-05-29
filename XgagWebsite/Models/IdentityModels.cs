@@ -33,6 +33,8 @@ namespace XgagWebsite.Models
         public virtual ICollection<UserDailyVote> DailyVotes { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; }
+
+        public string ProfilePictureUrl { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

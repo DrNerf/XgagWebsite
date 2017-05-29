@@ -53,13 +53,14 @@
                     <span id="send-post-comment-icon" class="glyphicon glyphicon-send"></span>
                 </button>
             </div>
-            <div class="row">
+            <div class="row container">
                 @if(Model.Comments != null)
                 {
                     foreach (var comment in Model.Comments)
                     {
                         <div class="row comment-row">
-                            <div class="row col-lg-12">
+                            <img class="col-lg-3" src="@Url.Content(comment.Owner.ProfilePictureUrl)" />
+                            <div class="row col-lg-9">
                                 <h4 class="text-primary">
                                     @(comment.Owner.UserName)
                                     @if (Model.Owner.UserName == comment.Owner.UserName)
@@ -78,20 +79,23 @@
                             </div>
                             @if (comment.Comments != null)
                             {
-                                <div class="row col-lg-11 pull-right">
+                                <div class="container row col-lg-11 pull-right">
                                     @foreach (var reply in comment.Comments)
                                     {
-                                    <div class="reply-row">
-                                        <h4 class="text-primary">
-                                            @(reply.Owner.UserName)
-                                            @if (Model.Owner.UserName == reply.Owner.UserName)
-                                            {
-                                                <span class="text-success">OP</span>
-                                            }
-                                            - <span class="text-info">@(reply.DateTimePosted)</span>
-                                        </h4>
-                                        <p>@Html.Raw(reply.Text)</p>
-                                    </div>
+                                        <div class="container reply-row row">
+                                            <img class="col-lg-3" src="@Url.Content(reply.Owner.ProfilePictureUrl)" />
+                                            <div class="col-lg-8">
+                                                <h4 class="text-primary">
+                                                    @(reply.Owner.UserName)
+                                                    @if (Model.Owner.UserName == reply.Owner.UserName)
+                                                    {
+                                                        <span class="text-success">OP</span>
+                                                    }
+                                                    - <span class="text-info">@(reply.DateTimePosted)</span>
+                                                </h4>
+                                                <p>@Html.Raw(reply.Text)</p>
+                                            </div>
+                                        </div>
                                     }
                                 </div>
                             }

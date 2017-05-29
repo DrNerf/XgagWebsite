@@ -3,7 +3,10 @@
     ViewBag.Title = "Manage";
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2>
+    <img width="50" src="@User.Identity.GetProfilePictureUrl()" />
+    @ViewBag.Title.
+</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div>
@@ -28,6 +31,12 @@
         </dt>
         <dd>
             [ @Html.ActionLink("Manage", "UpdateSubscriptions") ]
+        </dd>
+        <dt>
+            Avatar:
+        </dt>
+        <dd>
+            [ @Html.ActionLink("Change avatar", "UpdateAvatar") ]
         </dd>
         @*<dt>External Logins:</dt>
         <dd>
