@@ -1,7 +1,7 @@
-﻿using System;
+﻿using BusinessModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace XgagWebsite.Models
 {
@@ -50,6 +50,21 @@ namespace XgagWebsite.Models
                 .Any(c => c.DateTimePosted.Date == DateTime.Now.Date);
 
             return anyNewComments || anyNewRepliesComments;
+        }
+
+        public static implicit operator PostModel(Post source)
+        {
+            return new PostModel()
+            {
+                Score = source.CalculateScore(),
+                ImageUrl = source.Image != null ? $"/Images/View/{source.Image.ImageId}" : string.Empty,
+                Title = source.Title,
+                CommentsCount = source.Comments?.Count() ?? 0,
+                AnyNewComments = source.AnyNewComments(),
+                Id = source.PostId,
+                DateCreated = source.DateCreated.ToUniversalTime(),
+                YouTubeLink = source.YouTubeLink
+            };
         }
     }
 }
