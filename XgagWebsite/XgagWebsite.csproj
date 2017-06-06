@@ -300,6 +300,10 @@
     <Compile Include="Migrations\201705271454349_ProfilePictures.Designer.cs">
       <DependentUpon>201705271454349_ProfilePictures.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706061744445_IsActivatedAdded.cs" />
+    <Compile Include="Migrations\201706061744445_IsActivatedAdded.Designer.cs">
+      <DependentUpon>201706061744445_IsActivatedAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ChitChat.cs" />
@@ -415,6 +419,7 @@
     <Content Include="Views\Home\ChitChats.cshtml" />
     <Content Include="Views\Quotes\Code.cshtml" />
     <Content Include="Views\Manage\UpdateAvatar.cshtml" />
+    <Content Include="Views\Account\RegisterInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -482,6 +487,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705271454349_ProfilePictures.resx">
       <DependentUpon>201705271454349_ProfilePictures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706061744445_IsActivatedAdded.resx">
+      <DependentUpon>201706061744445_IsActivatedAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

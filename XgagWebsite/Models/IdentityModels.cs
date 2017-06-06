@@ -35,6 +35,9 @@ namespace XgagWebsite.Models
         public virtual ICollection<Post> Posts { get; set; }
 
         public string ProfilePictureUrl { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsActivated { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

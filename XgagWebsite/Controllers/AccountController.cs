@@ -13,7 +13,7 @@ using XgagWebsite.Models;
 namespace XgagWebsite.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -76,6 +76,16 @@ namespace XgagWebsite.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+            if (result == SignInStatus.Success)
+            {
+                var user = DbContext.Users.First(u => u.UserName.ToLower() == model.UserName.ToLower());
+                if (!user.IsActivated)
+                {
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                    result = SignInStatus.Failure;
+                }
+            }
+
             switch (result)
             {
                 case SignInStatus.Success:
@@ -162,7 +172,7 @@ namespace XgagWebsite.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -170,7 +180,7 @@ namespace XgagWebsite.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("RegisterInfo", "Account");
                 }
                 AddErrors(result);
             }
@@ -406,6 +416,12 @@ namespace XgagWebsite.Controllers
         // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult RegisterInfo()
         {
             return View();
         }
