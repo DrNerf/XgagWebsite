@@ -304,6 +304,10 @@
     <Compile Include="Migrations\201706061744445_IsActivatedAdded.Designer.cs">
       <DependentUpon>201706061744445_IsActivatedAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706072003507_IsActiveAddedToPeople.cs" />
+    <Compile Include="Migrations\201706072003507_IsActiveAddedToPeople.Designer.cs">
+      <DependentUpon>201706072003507_IsActiveAddedToPeople.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ChitChat.cs" />
@@ -490,6 +494,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706061744445_IsActivatedAdded.resx">
       <DependentUpon>201706061744445_IsActivatedAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706072003507_IsActiveAddedToPeople.resx">
+      <DependentUpon>201706072003507_IsActiveAddedToPeople.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

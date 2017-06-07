@@ -20,6 +20,8 @@ namespace XgagWebsite.Models
 
         public int UpExperience { get; set; }
 
+        public bool IsActive { get; set; }
+
         public Person()
         {
             Votes = new List<PersonVote>();

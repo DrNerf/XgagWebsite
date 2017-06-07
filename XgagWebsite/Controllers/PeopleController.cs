@@ -58,6 +58,15 @@ namespace XgagWebsite.Controllers
             }
 
             var person = DbContext.People.First(p => p.PersonId == personId);
+            if (!person.IsActive)
+            {
+                return JsonResult(new GenericOperationResponse<string>
+                {
+                    IsSuccess = false,
+                    Response = "This person does not work here anymore!"
+                });
+            }
+
             var newVote = DbContext.PeopleVotes.Create();
             newVote.Person = person;
             newVote.VoteType = voteType;
