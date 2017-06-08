@@ -162,6 +162,12 @@ namespace XgagWebsite.Controllers
             return View(chitChats);
         }
 
+        [Authorize]
+        public ActionResult Chat()
+        {
+            return View();
+        }
+
         public void RankPeopleLists(ApplicationDbContext db)
         {
             var shitRanking = db.People

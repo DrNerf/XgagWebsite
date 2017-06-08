@@ -33,16 +33,24 @@
                         </a>
                     </li>*@
                     <li>
-                        <a href="/Quotes">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <span class="glyphicon glyphicon-comment"></span>
                             Quotes
                         </a>
-                    </li>
-                    <li>
-                        <a href="/Quotes/Code">
-                            <span class="glyphicon glyphicon-align-left"></span>
-                            Code Quotes
-                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/Quotes">
+                                    <span class="glyphicon glyphicon-comment"></span>
+                                    Quotes
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Quotes/Code">
+                                    <span class="glyphicon glyphicon-align-left"></span>
+                                    Code Quotes
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -57,22 +65,42 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="/Home/ShitList">
-                            <span class="glyphicon glyphicon-thumbs-down"></span>
-                            Shit list
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-user"></span>
+                            People lists
                         </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/Home/ShitList">
+                                    <span class="glyphicon glyphicon-thumbs-down"></span>
+                                    Shit list
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Home/GoodGuyList">
+                                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                                    Good Guy list
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
-                        <a href="/Home/GoodGuyList">
-                            <span class="glyphicon glyphicon-thumbs-up"></span>
-                            Good Guy list
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-send"></span>
+                            Social
                         </a>
-                    </li>
-                    <li>
-                        <a href="/Home/ChitChats">
-                            <span class="glyphicon glyphicon-bullhorn"></span>
-                            Chit-Chats
-                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/Home/ChitChats">
+                                    <span class="glyphicon glyphicon-bullhorn"></span>
+                                    Chit-Chats
+                                </a>
+                                <a href="/Home/Chat">
+                                    <span class="glyphicon glyphicon-send"></span>
+                                    Chat
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>
                         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@

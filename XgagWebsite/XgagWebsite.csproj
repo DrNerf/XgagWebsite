@@ -425,6 +425,7 @@
     <Content Include="Views\Quotes\Code.cshtml" />
     <Content Include="Views\Manage\UpdateAvatar.cshtml" />
     <Content Include="Views\Account\RegisterInfo.cshtml" />
+    <Content Include="Views\Home\Chat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
