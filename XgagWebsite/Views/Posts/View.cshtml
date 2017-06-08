@@ -6,7 +6,7 @@
 
 <div class="jumbotron">
     <div class="container">
-        <div class="col-lg-8">
+        <div class="col-lg-10">
             <div class="row post-row">
                 @{ 
                     var userVote = Request.IsAuthenticated ? Model.Votes.FirstOrDefault(v => v.Voter.UserName == User.Identity.Name) : null;
