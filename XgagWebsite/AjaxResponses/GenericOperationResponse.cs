@@ -23,4 +23,8 @@ namespace XgagWebsite.AjaxResponses
             Response = response;
         }
     }
+
+    public class GenericOperationResponse : GenericOperationResponse<object>
+    {
+    }
 }

@@ -3,12 +3,133 @@
     ViewBag.Title = "Chat";
 }
 
-<div class="row">
-    <iframe src="http://deadsimplechat.com/+PHOYP"
-            frameborder="0"
-            height="600"
-            id="chat-frame"
-            class="col-lg-12">
-
-    </iframe>
+<div class="container">
+    <div class="row container chat-container scrollbar"
+         id="chat"
+         data-bind="template: { foreach: allMessages, afterAdd: showMessageElement }">
+        <div>
+            <div class="row chat-row"
+                 data-bind="if: !isOwned">
+                <div class="col-lg-1">
+                    <img data-bind="attr: {src: ownerAvatar}"
+                         class="chat-thumbnail" />
+                    <center>
+                        <span style="color:#df691a;"
+                              data-bind="text: ownerUsername"></span>
+                    </center>
+                </div>
+                <div class="col-lg-8 bubble-left">
+                    <span class="flex-center-vertically"
+                          data-bind="html: message"></span>
+                </div>
+            </div>
+            <div class="row chat-row"
+                 data-bind="if: isOwned">
+                <div class="col-lg-1 pull-right">
+                    <img data-bind="attr: {src: ownerAvatar}"
+                         class="chat-thumbnail" />
+                    <center>
+                        <span style="color:#df691a;"
+                              data-bind="text: ownerUsername"></span>
+                    </center>
+                </div>
+                <div class="col-lg-8 bubble-right pull-right">
+                    <span class="flex-center-vertically pull-right"
+                          data-bind="html: message"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <input class="form-control form-control-fix"
+               type="text"
+               data-bind="value: message"
+               id="message"
+               placeholder="(☞ﾟヮﾟ)☞ ☜(ﾟヮﾟ☜)" />
+        <button class="btn btn-primary pull-right"
+                data-toggle="tooltip" 
+                data-placement="left" 
+                title="Or press enter ( ͡° ͜ʖ ͡°)"
+                data-bind="click: sendMessage">
+            <span class="glyphicon glyphicon-send"></span>
+        </button>
+    </div>
 </div>
+
+@section scripts{
+    <script>
+        var sendMessageActionUrl = '@(Url.Action("SendMessage", "Chat"))';
+        var getMessagesActionUrl = '@(Url.Action("GetMessages", "Chat"))';
+        var vm = {
+            message: ko.observable(),
+            allMessages: ko.observableArray([]),
+            oldMessages: ko.observableArray([]),
+            sendMessage: function () {
+                $.post(sendMessageActionUrl, { message: vm.message() }, function (data) {
+
+                }).error(function () {
+                    toastr["error"]("Message could not be delivered.", "Whoops");
+                });
+                vm.message('');
+            },
+            refreshMessages: function () {
+                var initialLength = vm.allMessages().length;
+                vm.oldMessages(vm.allMessages());
+                $.get(getMessagesActionUrl, function (data) {
+                    if (data.isSuccess) {
+                        vm.allMessages(data.response);
+                        if (data.response.length > initialLength || vm.oldMessages().length == 0) {
+                            updateScroll();
+                        }
+                    } else {
+                        console.error("Cant retrieve messages.");
+                    }
+                });
+            },
+            showMessageElement: function (elem, index, data) {
+                if (vm.oldMessages().length > 0) {
+                    if (!vm.oldMessagesContains(data) && elem.nodeType === 1) {
+                        $(elem).hide().show(1000);
+                        updateScroll();
+                    }
+                }
+            },
+            oldMessagesContains: function (message) {
+                var oldMessages = vm.oldMessages();
+                for (var i = 0; i < oldMessages.length; i++) {
+                    var item = oldMessages[i];
+                    if (item.message == message.message &&
+                        item.dateTimeSent == message.dateTimeSent) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        };
+
+        ko.applyBindings(vm);
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+
+            vm.refreshMessages();
+            setInterval(function () {
+                vm.refreshMessages();
+            }, 1000);
+
+            $(document).keypress(function (e) {
+                if (e.which == 13) {
+                    try {
+                        vm.message($('#message').val());
+                        vm.sendMessage();
+                    }
+                    finally { }
+                }
+            });
+        });
+
+        function updateScroll() {
+            $("#chat").animate({ scrollTop: $('#chat').prop("scrollHeight") }, 1000);
+        }
+    </script>
+}

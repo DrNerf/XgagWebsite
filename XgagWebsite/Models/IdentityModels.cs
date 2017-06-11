@@ -14,6 +14,7 @@ namespace XgagWebsite.Models
         public ApplicationUser()
         {
             DailyVotes = new List<UserDailyVote>();
+            Messages = new List<ChatMessage>();
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -38,6 +39,8 @@ namespace XgagWebsite.Models
 
         [DefaultValue(false)]
         public bool IsActivated { get; set; }
+
+        public virtual ICollection<ChatMessage> Messages { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -65,6 +68,8 @@ namespace XgagWebsite.Models
         public DbSet<ChitChat> ChitChats { get; set; }
 
         public DbSet<ChitChatVote> ChitChatVotes { get; set; }
+
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

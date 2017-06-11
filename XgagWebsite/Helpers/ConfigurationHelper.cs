@@ -219,5 +219,20 @@ namespace XgagWebsite.Helpers
             }
         }
 
+        private int? m_ChatPageSize;
+
+        public int ChatPageSize
+        {
+            get
+            {
+                if (!m_ChatPageSize.HasValue)
+                {
+                    m_ChatPageSize = int.Parse(ConfigurationManager.AppSettings[nameof(ChatPageSize)]);
+                }
+
+                return m_ChatPageSize.Value;
+            }
+        }
+
     }
 }

@@ -123,6 +123,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Z.EntityFramework.Extensions, Version=3.12.4.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Extensions.3.12.4\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
@@ -172,6 +175,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AjaxResponses\ChatMessageResponse.cs" />
     <Compile Include="AjaxResponses\GenericOperationResponse.cs" />
     <Compile Include="AjaxResponses\PeopleTableItemResponse.cs" />
     <Compile Include="AjaxResponses\QuoteItemResponse.cs" />
@@ -214,6 +218,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\ChitChatController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
@@ -226,6 +231,7 @@
     <Compile Include="Enums\VoteType.cs" />
     <Compile Include="Extensions\DangerTypeExtensions.cs" />
     <Compile Include="Extensions\IIdentityExtensions.cs" />
+    <Compile Include="Extensions\MiscExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -308,8 +314,17 @@
     <Compile Include="Migrations\201706072003507_IsActiveAddedToPeople.Designer.cs">
       <DependentUpon>201706072003507_IsActiveAddedToPeople.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706101007094_ChatTable.cs" />
+    <Compile Include="Migrations\201706101007094_ChatTable.Designer.cs">
+      <DependentUpon>201706101007094_ChatTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706101539393_ChatMessagesOwnerId.cs" />
+    <Compile Include="Migrations\201706101539393_ChatMessagesOwnerId.Designer.cs">
+      <DependentUpon>201706101539393_ChatMessagesOwnerId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ChatMessage.cs" />
     <Compile Include="Models\ChitChat.cs" />
     <Compile Include="Models\ChitChatVote.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -327,6 +342,7 @@
     <Compile Include="Models\UserDailyVote.cs" />
     <Compile Include="Models\Vote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ChatService.cs" />
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
@@ -339,6 +355,7 @@
     <Content Include="Content\checkboxes.css" />
     <Content Include="Content\Images\profile.svg" />
     <Content Include="Content\magicsuggest-min.css" />
+    <Content Include="Content\Scrollbars.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -431,6 +448,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Api\Models\" />
     <Folder Include="Areas\Api\Views\Shared\" />
+    <Folder Include="Views\Chat\" />
     <Folder Include="Views\ChitChat\" />
     <Folder Include="Views\People\" />
   </ItemGroup>
@@ -499,6 +517,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706072003507_IsActiveAddedToPeople.resx">
       <DependentUpon>201706072003507_IsActiveAddedToPeople.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706101007094_ChatTable.resx">
+      <DependentUpon>201706101007094_ChatTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706101539393_ChatMessagesOwnerId.resx">
+      <DependentUpon>201706101539393_ChatMessagesOwnerId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

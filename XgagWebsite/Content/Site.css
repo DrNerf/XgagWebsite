@@ -23,44 +23,45 @@ textarea {
     max-width: 280px;
 }
 
-.post-image{
-    width:100%;
-    margin:0px;
+.post-image {
+    width: 100%;
+    margin: 0px;
 }
 
-.post-row{
+.post-row {
     border-bottom: 1px solid #dadada;
 }
 
-.text-editor{
-    height:100px !important;
-    max-width:999999px;
-    width:100%;
+.text-editor {
+    height: 100px !important;
+    max-width: 999999px;
+    width: 100%;
 }
 
-.comment-row{
-    margin:10px;
-    padding:10px;
-    border:1px solid #dadada;
+.comment-row {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #dadada;
 }
 
-.reply-row{
-    border-bottom:0px solid #dadada;
+.reply-row {
+    border-bottom: 0px solid #dadada;
 }
 
-.comment-image{
+.comment-image {
     border: 1px solid #df691a;
-    width:80%;
+    width: 80%;
+    max-width: 300px !important;
 }
 
-.person-image{
-    max-height:100px !important;
-    max-width:100px !important;
+.person-image {
+    max-height: 100px !important;
+    max-width: 100px !important;
     border: 1px solid #df691a;
 }
 
-.person-name{
-    font-size:18px;
+.person-name {
+    font-size: 18px;
 }
 
 .glyphicon-refresh-animate {
@@ -71,40 +72,156 @@ textarea {
 }
 
 @keyframes spin {
-    from { transform: scale(1) rotate(0deg);}
-    to { transform: scale(1) rotate(360deg);}
+    from {
+        transform: scale(1) rotate(0deg);
+    }
+
+    to {
+        transform: scale(1) rotate(360deg);
+    }
 }
-  
+
 @-webkit-keyframes spinw {
-    from { -webkit-transform: rotate(0deg);}
-    to { -webkit-transform: rotate(360deg);}
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+    }
 }
 
 @-moz-keyframes spinm {
-    from { -moz-transform: rotate(0deg);}
-    to { -moz-transform: rotate(360deg);}
+    from {
+        -moz-transform: rotate(0deg);
+    }
+
+    to {
+        -moz-transform: rotate(360deg);
+    }
 }
 
-.quote-row{
-    background:black;
+.quote-row {
+    background: black;
     padding: 15px;
-    font-family:'Segoe Script';
+    font-family: 'Segoe Script';
     border: 1px solid #df691a;
 }
 
-.quote-author-img{
-    width:60px;
-    height:60px;
+.quote-author-img {
+    width: 60px;
+    height: 60px;
 }
 
-.inline{
-    display:inline;
+.inline {
+    display: inline;
 }
 
-.form-control-fix{
+.form-control-fix {
     max-width: 9999999px !important;
 }
 
-pre{
+pre {
     border: 1px solid #df691a;
+}
+
+.chat-container {
+    height: 500px;
+    overflow: auto;
+    border: 1px solid #df691a;
+    border-bottom: 0px;
+    background: #4e5d6c;
+    padding:15px;
+}
+
+.chat-row{
+    margin-top: 15px !important;
+}
+
+.bubble-right {
+    position: relative;
+    min-height: 70px;
+    padding: 10px;
+    background: #2b3e50;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: #df691a solid 1px;
+    vertical-align:middle;
+}
+
+.bubble-right:after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 15px 0 15px 15px;
+    border-color: transparent #2b3e50;
+    display: block;
+    width: 0;
+    z-index: 1;
+    right: -15px;
+    top: 35px;
+}
+
+.bubble-right:before {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 15px 0 15px 15px;
+    border-color: transparent #df691a;
+    display: block;
+    width: 0;
+    z-index: 0;
+    right: -16px;
+    top: 35px;
+}
+
+.bubble-left {
+    position: relative;
+    /*width: 300px;*/
+    min-height: 70px;
+    padding: 10px;
+    background: #2b3e50;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: #df691a solid 1px;
+}
+
+.bubble-left:after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 15px 15px 15px 0;
+    border-color: transparent #2b3e50;
+    display: block;
+    width: 0;
+    z-index: 1;
+    left: -15px;
+    top: 35px;
+}
+
+.bubble-left:before {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 15px 15px 15px 0;
+    border-color: transparent #df691a;
+    display: block;
+    width: 0;
+    z-index: 0;
+    left: -16px;
+    top: 35px;
+}
+
+.chat-thumbnail{
+    height:100%;
+    width:100%;
+}
+
+.flex-center-vertically {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    min-height:45px;
 }
