@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -27,5 +28,24 @@ namespace XgagWebsite.Models
         public virtual ICollection<Comment> Comments { get; set; }
 
         public virtual Comment Parent { get; set; }
+
+        public static implicit operator CommentModel(Comment comment)
+        {
+            if (comment != null)
+            {
+                return new CommentModel()
+                {
+                    Comments = comment.Comments.Select(c => (CommentModel)c),
+                    DateTimePosted = comment.DateTimePosted.ToUniversalTime().Ticks,
+                    Id = comment.CommentId,
+                    Owner = comment.Owner,
+                    Parent = comment.Parent,
+                    PostOwner = comment.PostOwner,
+                    Text = comment.Text
+                }; 
+            }
+
+            return null;
+        }
     }
 }

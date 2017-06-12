@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel;
 using System.Collections.Generic;
+using BusinessModels;
 
 namespace XgagWebsite.Models
 {
@@ -41,6 +42,16 @@ namespace XgagWebsite.Models
         public bool IsActivated { get; set; }
 
         public virtual ICollection<ChatMessage> Messages { get; set; }
+
+        public static implicit operator ApplicationUserModel(ApplicationUser user)
+        {
+            return new ApplicationUserModel()
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Avatar = user.ProfilePictureUrl
+            };
+        }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

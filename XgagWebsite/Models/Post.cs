@@ -62,8 +62,24 @@ namespace XgagWebsite.Models
                 CommentsCount = source.Comments?.Count() ?? 0,
                 AnyNewComments = source.AnyNewComments(),
                 Id = source.PostId,
-                DateCreated = source.DateCreated.ToUniversalTime(),
+                DateCreated = source.DateCreated.ToUniversalTime().Ticks,
                 YouTubeLink = source.YouTubeLink
+            };
+        }
+
+        public static implicit operator PostRichModel(Post source)
+        {
+            return new PostRichModel()
+            {
+                Score = source.CalculateScore(),
+                ImageUrl = source.Image != null ? $"/Images/View/{source.Image.ImageId}" : string.Empty,
+                Title = source.Title,
+                CommentsCount = source.Comments?.Count() ?? 0,
+                AnyNewComments = source.AnyNewComments(),
+                Id = source.PostId,
+                DateCreated = source.DateCreated.ToUniversalTime().Ticks,
+                YouTubeLink = source.YouTubeLink,
+                Comments = source.Comments.Select(c => (CommentModel)c)
             };
         }
     }

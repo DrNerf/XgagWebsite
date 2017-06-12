@@ -19,13 +19,22 @@ namespace XgagWebsite.Areas.Api.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Posts
-        public IEnumerable<PostModel> GetPosts()
+        /// <summary>
+        /// Gets the posts.
+        /// </summary>
+        /// <returns>The page of posts requested.</returns>
+        public IEnumerable<PostModel> GetPosts(int skip, int take)
         {
-            return db.Posts.ToList().Select(p => (PostModel)p);
+            return db.Posts
+                .OrderByDescending(p => p.DateCreated)
+                .Skip(skip)
+                .Take(take)
+                .ToList()
+                .Select(p => (PostModel)p);
         }
 
         // GET: api/Posts/5
-        [ResponseType(typeof(PostModel))]
+        [ResponseType(typeof(PostRichModel))]
         public async Task<IHttpActionResult> GetPost(int id)
         {
             Post post = await db.Posts.FindAsync(id);
@@ -34,7 +43,7 @@ namespace XgagWebsite.Areas.Api.Controllers
                 return NotFound();
             }
 
-            return Ok((PostModel)post);
+            return Ok((PostRichModel)post);
         }
 
         // PUT: api/Posts/5
