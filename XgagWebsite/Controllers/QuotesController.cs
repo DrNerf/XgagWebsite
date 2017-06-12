@@ -10,6 +10,7 @@ using XgagWebsite.Models;
 
 namespace XgagWebsite.Controllers
 {
+    [Authorize]
     public class QuotesController : BaseController
     {
         public ActionResult Index()
@@ -30,8 +31,7 @@ namespace XgagWebsite.Controllers
                 .ToList();
             return JsonResult(quotes.Select(q => QuoteItemResponse.Transform(q)));
         }
-
-        [Authorize]
+        
         [HttpPost]
         [ValidateInput(false)]
         public async Task<ActionResult> Create(string text, string authorId, QuoteType type = QuoteType.Normal)

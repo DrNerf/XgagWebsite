@@ -12,6 +12,7 @@ namespace XgagWebsite.Controllers
 {
     public class HomeController : BaseController
     {
+        [Authorize]
         public ActionResult Index(int? page)
         {
             Task.Factory.StartNew(() => 
