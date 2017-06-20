@@ -229,9 +229,9 @@ pre {
 .post-preview {
     height: 100px;
     overflow: hidden;
+    border: 1px solid #df691a;
 }
 
 .post-preview img{
     width: 100%;
-    border: 1px solid #df691a;
 }
