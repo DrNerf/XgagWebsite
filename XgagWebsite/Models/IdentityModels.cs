@@ -82,6 +82,8 @@ namespace XgagWebsite.Models
 
         public DbSet<ChatMessage> ChatMessages { get; set; }
 
+        public DbSet<PostOfTheDay> PostsOfTheDay { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

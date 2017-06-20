@@ -10,5 +10,7 @@ namespace XgagWebsite.ViewModels
         public IEnumerable<ApplicationUser> TopContributors { get; set; }
 
         public IEnumerable<Post> TopPosts { get; set; }
+
+        public PostOfTheDay PostOfTheDay { get; set; }
     }
 }

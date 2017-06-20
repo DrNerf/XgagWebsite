@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -13,7 +14,7 @@ namespace XgagWebsite.Controllers
     public class HomeController : BaseController
     {
         [Authorize]
-        public ActionResult Index(int? page)
+        public async Task<ActionResult> Index(int? page)
         {
             Task.Factory.StartNew(() => 
             {
@@ -28,6 +29,17 @@ namespace XgagWebsite.Controllers
                     } 
                 }
             });
+            var postOfTheDay = DbContext.PostsOfTheDay
+                .FirstOrDefault(p => DbFunctions.TruncateTime(p.Date) == DbFunctions.TruncateTime(DateTime.Now));
+            if (postOfTheDay == null)
+            {
+                var randomPost = DbContext.Posts.OrderBy(p => Guid.NewGuid()).First();
+                var newPostOfTheDay = DbContext.PostsOfTheDay.Create();
+                newPostOfTheDay.Date = DateTime.Now.Date;
+                newPostOfTheDay.Post = randomPost;
+                postOfTheDay = DbContext.PostsOfTheDay.Add(newPostOfTheDay);
+                await DbContext.SaveChangesAsync();
+            }
 
             var pageSize = ConfigurationHelper.Instance.PageSize;
             var posts = DbContext.Posts
@@ -44,11 +56,13 @@ namespace XgagWebsite.Controllers
                 .OrderByDescending(p => p.Votes.Sum(v => (int)v.Type))
                 .Take(topStatsCount)
                 .ToList();
+
             var viewModel = new ViewModels.IndexViewModel()
             {
                 Posts = posts,
                 TopContributors = topContributors,
-                TopPosts = topPosts
+                TopPosts = topPosts,
+                PostOfTheDay = postOfTheDay
             };
 
             return View(viewModel);

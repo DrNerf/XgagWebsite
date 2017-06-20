@@ -321,6 +321,10 @@
     <Compile Include="Migrations\201706101539393_ChatMessagesOwnerId.Designer.cs">
       <DependentUpon>201706101539393_ChatMessagesOwnerId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706202054561_PostsOfTheDay.cs" />
+    <Compile Include="Migrations\201706202054561_PostsOfTheDay.Designer.cs">
+      <DependentUpon>201706202054561_PostsOfTheDay.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ChatMessage.cs" />
@@ -333,6 +337,7 @@
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PersonRank.cs" />
+    <Compile Include="Models\PostOfTheDay.cs" />
     <Compile Include="Models\Quote.cs" />
     <Compile Include="Models\RankingHistoryItem.cs" />
     <Compile Include="Models\Person.cs" />
@@ -522,6 +527,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706101539393_ChatMessagesOwnerId.resx">
       <DependentUpon>201706101539393_ChatMessagesOwnerId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706202054561_PostsOfTheDay.resx">
+      <DependentUpon>201706202054561_PostsOfTheDay.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
