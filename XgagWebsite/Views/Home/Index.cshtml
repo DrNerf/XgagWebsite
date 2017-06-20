@@ -111,6 +111,11 @@
                                                 post.Title,
                                                 post.Votes.Sum(v => (int)v.Type))
                                         </a>
+                                        <div class="post-preview">
+                                            <a href="/Posts/View/@(post.PostId)">
+                                                <img src="@(string.Format("/Images/View/{0}", post.Image.ImageId))" />
+                                            </a>
+                                        </div>
                                     </li>
                                 }
                             </ul>

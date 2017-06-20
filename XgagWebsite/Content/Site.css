@@ -225,3 +225,13 @@ pre {
     flex-direction: column;
     min-height:45px;
 }
+
+.post-preview {
+    height: 100px;
+    overflow: hidden;
+}
+
+.post-preview img{
+    width: 100%;
+    border: 1px solid #df691a;
+}
