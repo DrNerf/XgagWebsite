@@ -14,6 +14,7 @@ using XgagWebsite.Models;
 
 namespace XgagWebsite.Areas.Api.Controllers
 {
+    [Authorize]
     public class PostsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
