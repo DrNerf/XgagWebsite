@@ -46,5 +46,16 @@ namespace XgagWebsite
 
             return result;
         }
+
+        public static string GetProfilePictureUrl(this ApplicationUser user, string baseUrl)
+        {
+            var result = user.ProfilePictureUrl;
+            if (result[0] == '~')
+            {
+                result = $"{baseUrl}{VirtualPathUtility.ToAbsolute(result)}";
+            }
+
+            return result;
+        }
     }
 }

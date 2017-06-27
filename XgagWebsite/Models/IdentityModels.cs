@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel;
 using System.Collections.Generic;
 using BusinessModels;
+using System;
 
 namespace XgagWebsite.Models
 {
@@ -40,6 +41,8 @@ namespace XgagWebsite.Models
 
         [DefaultValue(false)]
         public bool IsActivated { get; set; }
+
+        public Guid? ApiSessionToken { get; set; }
 
         public virtual ICollection<ChatMessage> Messages { get; set; }
 

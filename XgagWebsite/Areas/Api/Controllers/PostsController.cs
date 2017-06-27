@@ -1,20 +1,23 @@
-﻿using BusinessModels;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using BusinessModels;
+using XgagWebsite.Attributes;
 using XgagWebsite.Models;
 
 namespace XgagWebsite.Areas.Api.Controllers
 {
-    [Authorize]
+    /// <summary>
+    /// Posts Controller.
+    /// </summary>
+    /// <seealso cref="ApiController" />
+    [ApiAuthorize]
     public class PostsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -22,6 +25,7 @@ namespace XgagWebsite.Areas.Api.Controllers
         // GET: api/Posts
         /// <summary>
         /// Gets the posts.
+        /// Requires SessionToken.
         /// </summary>
         /// <returns>The page of posts requested.</returns>
         public IEnumerable<PostModel> GetPosts(int skip, int take)
@@ -35,6 +39,12 @@ namespace XgagWebsite.Areas.Api.Controllers
         }
 
         // GET: api/Posts/5
+        /// <summary>
+        /// Gets the post.
+        /// Requires SessionToken.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The requested post.</returns>
         [ResponseType(typeof(PostRichModel))]
         public async Task<IHttpActionResult> GetPost(int id)
         {

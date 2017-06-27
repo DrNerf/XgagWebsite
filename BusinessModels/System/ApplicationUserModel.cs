@@ -2,6 +2,9 @@
 
 namespace BusinessModels
 {
+    /// <summary>
+    /// Application User model.
+    /// </summary>
     public class ApplicationUserModel
     {
         /// <summary>
