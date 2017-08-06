@@ -56,12 +56,19 @@ namespace XgagWebsite.Areas.Api.Controllers
             try
             {
                 var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
-                var user = DbContext.Users.First(u => u.UserName.ToLower() == model.UserName.ToLower());
-                user.ApiSessionToken = token;
-                await DbContext.SaveChangesAsync();
-                response.Avatar = user.GetProfilePictureUrl(GetBaseAddress());
-                response.Username = user.UserName;
-                response.Id = user.Id;
+                if (result == SignInStatus.Success)
+                {
+                    var user = DbContext.Users.First(u => u.UserName.ToLower() == model.UserName.ToLower());
+                    user.ApiSessionToken = token;
+                    await DbContext.SaveChangesAsync();
+                    response.Avatar = user.GetProfilePictureUrl(GetBaseAddress());
+                    response.Username = user.UserName;
+                    response.Id = user.Id; 
+                }
+                else
+                {
+                    throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                }
             }
             catch (Exception ex)
             {

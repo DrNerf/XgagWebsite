@@ -33,7 +33,9 @@ namespace XgagWebsite.Controllers
                 .FirstOrDefault(p => DbFunctions.TruncateTime(p.Date) == DbFunctions.TruncateTime(DateTime.Now));
             if (postOfTheDay == null)
             {
-                var randomPost = DbContext.Posts.OrderBy(p => Guid.NewGuid()).First();
+                var randomPost = DbContext.Posts
+                    .OrderBy(p => Guid.NewGuid())
+                    .First(p => p.Image != null);
                 var newPostOfTheDay = DbContext.PostsOfTheDay.Create();
                 newPostOfTheDay.Date = DateTime.Now.Date;
                 newPostOfTheDay.Post = randomPost;
