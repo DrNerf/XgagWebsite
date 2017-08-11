@@ -29,6 +29,8 @@ namespace XgagWebsite.Models
 
         public string YouTubeLink { get; set; }
 
+        public bool IsNSFW { get; set; }
+
         public int CalculateScore()
         {
             return Votes?.Select(v => v.Type).Cast<int>().Sum() ?? 0;

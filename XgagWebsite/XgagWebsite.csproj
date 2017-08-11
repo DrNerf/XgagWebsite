@@ -336,6 +336,10 @@
     <Compile Include="Migrations\201706261918330_ApiSessionTokens.Designer.cs">
       <DependentUpon>201706261918330_ApiSessionTokens.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708061258292_NSFWAdded.cs" />
+    <Compile Include="Migrations\201708061258292_NSFWAdded.Designer.cs">
+      <DependentUpon>201708061258292_NSFWAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ChatMessage.cs" />
@@ -546,6 +550,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706261918330_ApiSessionTokens.resx">
       <DependentUpon>201706261918330_ApiSessionTokens.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708061258292_NSFWAdded.resx">
+      <DependentUpon>201708061258292_NSFWAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
