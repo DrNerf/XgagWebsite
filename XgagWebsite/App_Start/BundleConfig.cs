@@ -27,7 +27,8 @@ namespace XgagWebsite
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/Scrollbars.css",
-                      "~/Content/checkboxes.css"));
+                      "~/Content/checkboxes.css",
+                      "~/Content/animated-stripes.css"));
         }
     }
 }

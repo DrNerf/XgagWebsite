@@ -31,8 +31,19 @@
                                     </div>
                                 </div>
                             }
+
+                            <div class="loading-overlay"
+                                 id="loading-overlay-@(post.PostId)">
+                                <div class="loading animated fadeIn">
+                                    <div class="bg"></div>
+                                </div>
+                            </div>
+
                             <a href="/Posts/View/@(post.PostId)">
-                                <img src="@(string.Format("/Images/View/{0}", post.Image.ImageId))" class="post-image" />
+                                <img src="@(string.Format("/Images/View/{0}", post.Image.ImageId))"
+                                     data-id="@(post.PostId)"
+                                     onload="$('#loading-overlay-@(post.PostId)').fadeOut(1000)"
+                                     class="post-image" />
                             </a>
                         </div>
                     }
