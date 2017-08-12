@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using XgagWebsite.AjaxResponses;
 using XgagWebsite.Enums;
 using XgagWebsite.Helpers;
 using XgagWebsite.Models;
@@ -16,7 +17,11 @@ namespace XgagWebsite.Controllers
     {
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> Upload(string title, HttpPostedFileBase uploadImage, string youTubeLink)
+        public async Task<ActionResult> Upload(
+            string title, 
+            HttpPostedFileBase uploadImage, 
+            string youTubeLink,
+            bool isNSFW)
         {
             if (string.IsNullOrEmpty(title))
             {
@@ -49,6 +54,7 @@ namespace XgagWebsite.Controllers
             post.DateCreated = DateTime.Now;
             post.Title = title;
             post.Owner = owner;
+            post.IsNSFW = isNSFW;
 
             DbContext.Posts.Add(post);
             await DbContext.SaveChangesAsync();
@@ -188,6 +194,27 @@ namespace XgagWebsite.Controllers
             }
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        [Authorize(Roles = RolesHelper.AdminRole)]
+        [HttpPost]
+        public async Task<ActionResult> ToggleNSFW(int postId)
+        {
+            var isSuccess = true;
+            var result = false;
+
+            try
+            {
+                var post = DbContext.Posts.First(p => p.PostId == postId);
+                result = post.IsNSFW = !post.IsNSFW;
+                await DbContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                isSuccess = false;
+            }
+
+            return JsonResult(new GenericOperationResponse<bool>(result) { IsSuccess = isSuccess });
         }
 
         private string TryConvertTextToHtml(string text)

@@ -18,14 +18,19 @@
                     <h3 class="text-primary"><a href="/Posts/View/@(post.PostId)">@post.Title</a></h3>
                     @if (post.Image != null)
                     {
-                        <div>
-                            <div class="nsfw-overlay"
-                                 data-id="nsfw-@(post.PostId)">
-                                <h1 class="glyphicon glyphicon-warning-sign"></h1>
-                                <h1>NSFW</h1>
-                                <h3>This post is marked as not safe for work</h3>
-                                <h2>Click to view the post</h2>
-                            </div>
+                        <div class="post-content-wrapper">
+                            @if (post.IsNSFW)
+                            {
+                                <div class="nsfw-overlay"
+                                     data-id="nsfw-@(post.PostId)">
+                                    <div>
+                                        <h1 class="glyphicon glyphicon-warning-sign"></h1>
+                                        <h1>NSFW</h1>
+                                        <h3>This post is marked as not safe for work</h3>
+                                        <h2>Click to view the post</h2>
+                                    </div>
+                                </div>
+                            }
                             <a href="/Posts/View/@(post.PostId)">
                                 <img src="@(string.Format("/Images/View/{0}", post.Image.ImageId))" class="post-image" />
                             </a>
@@ -63,6 +68,17 @@
                                 <span style="font-weight:bold;">@(post.CountComments())</span>
                             </button>
                         </a>
+                        @if (User.IsInRole(RolesHelper.AdminRole))
+                        {
+                            <button class="btn btn-warning toggle-nsfw"
+                                    data-id="@(post.PostId)"
+                                    data-toggle="tooltip"
+                                    data-placement="bottom"
+                                    title="Toggle NSFW">
+                                <span class="glyphicon glyphicon-warning-sign"></span>
+                            </button>
+                        }
+
                         <span class="pull-right text-info">Posted at: <span>@post.DateCreated</span></span>
                     </div>
                     <hr />
@@ -166,6 +182,31 @@
 
             $(".nsfw-overlay").on("click", function () {
                 $(this).slideUp();
+            });
+
+            $(".toggle-nsfw").on("click", function () {
+                var postId = $(this).attr('data-id');
+                var requestData = {
+                    postId: postId
+                };
+
+                if (postId) {
+                    $.post('@Url.Action("ToggleNSFW", "Posts")', requestData, function (data) {
+                        if (data.isSuccess) {
+                            if (data.response) {
+                                toastr["success"]("Post is now NSFW.", "Success");
+                            } else {
+                                toastr["success"]("Post is no longer NSFW.", "Success");
+                            }
+                        } else {
+                            toastr["error"]("Server error!", "WTF");
+                        }
+                    }).error(function () {
+                        toastr["error"]("Server error!", "WTF");
+                    });
+                } else {
+                    toastr["error"]("Can't locate post Id!", "WTF");
+                }
             });
         });
     </script>

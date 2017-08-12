@@ -110,8 +110,6 @@
 
         ko.applyBindings(vm);
         $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-
             vm.refreshMessages();
             setInterval(function () {
                 vm.refreshMessages();

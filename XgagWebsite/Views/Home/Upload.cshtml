@@ -25,11 +25,24 @@
                                    placeholder="YouTube video link..." />    
                         </div>
                         <div class="row">
-                            <input type="checkbox"
-                                   id="isNSFW"
-                                   class="form-control col-lg-1"
-                                   name="isNSFW" />
-                            <label for="isNSFW">Not safe for work?</label>
+                            <div class="col-md-2">
+                                <div class="squaredTwo">
+                                    <input type="checkbox"
+                                           id="isNSFW"
+                                           name="isNSFW"
+                                           value="true"/>
+                                    <label for="isNSFW">
+                                    </label>
+                                </div>
+                                <input type="hidden" value="false" name="isNSFW" />
+                            </div>
+                            <div class="col-md-10">
+                                <br />
+                                <label for="isNSFW"
+                                       style="font-size:16px;">
+                                    Not safe for work?
+                                </label>
+                            </div>
                         </div>
                         <div class="row">
                             <button type="submit" name="button" class="btn btn-primary">
