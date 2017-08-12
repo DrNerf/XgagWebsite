@@ -42,7 +42,6 @@
                             <a href="/Posts/View/@(post.PostId)">
                                 <img src="@(string.Format("/Images/View/{0}", post.Image.ImageId))"
                                      data-id="@(post.PostId)"
-                                     onload="$('#loading-overlay-@(post.PostId)').fadeOut(1000)"
                                      class="post-image" />
                             </a>
                         </div>
@@ -185,6 +184,18 @@
 
     <script>
         $(function () {
+            $('.post-image').one('load', function () {
+                var postId = $(this).attr('data-id');
+                if (postId) {
+                    var overlay = $('#loading-overlay-' + postId);
+                    if (overlay) {
+                        overlay.fadeOut(1000);
+                    }
+                }
+            }).each(function () {
+                if (this.complete) $(this).load();
+            });
+
             $('#next-page').click(function () {
                 var btn = $("#next-page");
                 var currentPage = btn.attr("data-current-page");

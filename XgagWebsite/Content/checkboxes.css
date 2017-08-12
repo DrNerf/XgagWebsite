@@ -1,5 +1,5 @@
-﻿input[type=checkbox] {
-	visibility: hidden;
+﻿.squaredTwo input[type=checkbox] {
+    visibility: hidden;
 }
 
 /* SLIDE ONE */
