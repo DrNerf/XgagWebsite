@@ -44,6 +44,18 @@ namespace XgagWebsite.Models
 
         public Guid? ApiSessionToken { get; set; }
 
+        public string Trace { get; set; }
+
+        public string Browser { get; set; }
+
+        public string BrowserVersion { get; set; }
+
+        public string Platform { get; set; }
+
+        public DateTime? LastLogin { get; set; }
+
+        public string IPAddress { get; set; }
+
         public virtual ICollection<ChatMessage> Messages { get; set; }
 
         public static implicit operator ApplicationUserModel(ApplicationUser user)

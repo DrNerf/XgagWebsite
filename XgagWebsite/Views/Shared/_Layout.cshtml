@@ -124,7 +124,14 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=sunburst"></script>
     <script src="~/Scripts/magicsuggest-min.js"></script>
+    <script src="~/Scripts/cookie-tools.js"></script>
     <script>
+        //set trace cookie
+        var traceKey = 'Trace';
+        if (!readCookie(traceKey)) {
+            createCookie(traceKey, '@(Guid.NewGuid())', 364);
+        }
+
         $('[data-toggle="tooltip"]').tooltip();
 
         toastr.options = {

@@ -341,6 +341,10 @@
     <Compile Include="Migrations\201708061258292_NSFWAdded.Designer.cs">
       <DependentUpon>201708061258292_NSFWAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708181807509_LoginTracking.cs" />
+    <Compile Include="Migrations\201708181807509_LoginTracking.Designer.cs">
+      <DependentUpon>201708181807509_LoginTracking.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ChatMessage.cs" />
@@ -407,6 +411,7 @@
     <Content Include="Areas\Api\Views\web.config" />
     <None Include="Properties\PublishProfiles\xgag.org - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\cookie-tools.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -555,6 +560,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708061258292_NSFWAdded.resx">
       <DependentUpon>201708061258292_NSFWAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708181807509_LoginTracking.resx">
+      <DependentUpon>201708181807509_LoginTracking.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

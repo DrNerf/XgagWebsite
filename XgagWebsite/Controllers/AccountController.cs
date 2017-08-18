@@ -79,6 +79,19 @@ namespace XgagWebsite.Controllers
             if (result == SignInStatus.Success)
             {
                 var user = DbContext.Users.First(u => u.UserName.ToLower() == model.UserName.ToLower());
+                var browser = Request.Browser;
+                if (browser != null)
+                {
+                    user.Browser = browser.Browser;
+                    user.BrowserVersion = browser.Version;
+                    user.Platform = browser.Platform; 
+                }
+
+                user.Trace = Request.Cookies["Trace"]?.Value;
+                user.LastLogin = DateTime.Now;
+                user.IPAddress = Request.UserHostAddress;
+                await DbContext.SaveChangesAsync();
+
                 if (!user.IsActivated)
                 {
                     AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
