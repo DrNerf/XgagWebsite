@@ -32,12 +32,12 @@
                                 </div>
                             }
 
-                            <div class="loading-overlay"
+                            @*<div class="loading-overlay"
                                  id="loading-overlay-@(post.PostId)">
                                 <div class="loading animated fadeIn">
                                     <div class="bg"></div>
                                 </div>
-                            </div>
+                            </div>*@
 
                             <a href="/Posts/View/@(post.PostId)">
                                 <img src="@(string.Format("/Images/View/{0}", post.Image.ImageId))"
@@ -89,7 +89,7 @@
                             </button>
                         }
 
-                        <span class="pull-right text-info">Posted at: <span>@post.DateCreated</span></span>
+                        <span class="pull-right text-info">Posted at: <span>@post.DateCreated.ToString("d")</span></span>
                     </div>
                     <hr />
                 </div>
@@ -184,17 +184,17 @@
 
     <script>
         $(function () {
-            $('.post-image').one('load', function () {
-                var postId = $(this).attr('data-id');
-                if (postId) {
-                    var overlay = $('#loading-overlay-' + postId);
-                    if (overlay) {
-                        overlay.fadeOut(1000);
-                    }
-                }
-            }).each(function () {
-                if (this.complete) $(this).load();
-            });
+            //$('.post-image').one('load', function () {
+            //    var postId = $(this).attr('data-id');
+            //    if (postId) {
+            //        var overlay = $('#loading-overlay-' + postId);
+            //        if (overlay) {
+            //            overlay.fadeOut(1000);
+            //        }
+            //    }
+            //}).each(function () {
+            //    if (this.complete) $(this).load();
+            //});
 
             $('#next-page').click(function () {
                 var btn = $("#next-page");
