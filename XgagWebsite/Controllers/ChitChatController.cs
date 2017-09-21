@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using XgagWebsite.AjaxResponses;
 using XgagWebsite.Enums;
+using XgagWebsite.Helpers;
 using XgagWebsite.Models;
 
 namespace XgagWebsite.Controllers
@@ -77,6 +78,26 @@ namespace XgagWebsite.Controllers
             }
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        [Authorize(Roles = RolesHelper.AdminRole)]
+        [HttpPost]
+        public async Task<ActionResult> Remove(int chitChatId)
+        {
+            var result = new GenericOperationResponse();
+            var chitChat = DbContext.ChitChats.FirstOrDefault(cc => cc.ChitChatId == chitChatId);
+            if (chitChat != null)
+            {
+                chitChat.Content = ConfigurationHelper.Instance.CensorshipText;
+                await DbContext.SaveChangesAsync();
+            }
+            else
+            {
+                result.IsSuccess = false;
+                result.Message = "Record not found in DB.";
+            }
+
+            return JsonResult(result);
         }
     }
 }

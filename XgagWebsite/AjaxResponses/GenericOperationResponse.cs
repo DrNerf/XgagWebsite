@@ -1,8 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace XgagWebsite.AjaxResponses
 {
@@ -10,6 +6,9 @@ namespace XgagWebsite.AjaxResponses
     {
         [JsonProperty(PropertyName = "isSuccess")]
         public bool IsSuccess { get; set; } = true;
+
+        [JsonProperty(PropertyName = "message")]
+        public string Message { get; set; }
 
         [JsonProperty(PropertyName = "response")]
         public TResponse Response { get; set; }

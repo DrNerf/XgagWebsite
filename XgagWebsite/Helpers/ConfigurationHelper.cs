@@ -234,5 +234,19 @@ namespace XgagWebsite.Helpers
             }
         }
 
+        private string m_CensorshipText;
+
+        public string CensorshipText
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_CensorshipText))
+                {
+                    m_CensorshipText = ConfigurationManager.AppSettings[nameof(CensorshipText)];
+                }
+
+                return m_CensorshipText;
+            }
+        }
     }
 }
