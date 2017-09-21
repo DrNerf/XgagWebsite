@@ -64,7 +64,7 @@ namespace XgagWebsite.Models
             {
                 Id = user.Id,
                 Username = user.UserName,
-                Avatar = user.ProfilePictureUrl
+                Avatar = user.TrimRelativePrefix()
             };
         }
     }

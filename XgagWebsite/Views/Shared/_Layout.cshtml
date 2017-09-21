@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using XgagWebsite.Helpers
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -90,6 +92,23 @@
                             Chit-Chats
                         </a>
                     </li>
+                    @if (User.IsInRole(RolesHelper.AdminRole))
+                    {
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-cog"></span>
+                                Admin Tools
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="@(Url.Action("UsersPanel", "Admin"))">
+                                        <span class="glyphicon glyphicon-user"></span>
+                                        Users panel
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>
                         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>

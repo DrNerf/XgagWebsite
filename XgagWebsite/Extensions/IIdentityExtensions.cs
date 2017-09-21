@@ -57,5 +57,10 @@ namespace XgagWebsite
 
             return result;
         }
+
+        public static string TrimRelativePrefix(this ApplicationUser user)
+        {
+            return user.ProfilePictureUrl.TrimStart('~');
+        }
     }
 }

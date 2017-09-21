@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "Users Panel";
+}
+
+<div class="container">
+    <div class="row">
+        <h2>
+            <span class="glyphicon glyphicon-user"></span>
+            Users Panel
+        </h2>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 container" data-bind="foreach: searchCriteriaCollection">
+            <div class="row">
+                <h4 class="col-lg-6" data-bind="text: displayName"></h4>
+                <input class="col-lg-6 form-control" 
+                       type="text" 
+                       data-bind="value: value" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <button class="btn btn-primary" data-bind="click: searchUsers">
+            <span class="glyphicon glyphicon-search"></span>
+            Search
+        </button>
+    </div>
+
+    <div class="row">
+        <table class="table table-bordered table-responsive table-striped">
+            <thead>
+                <tr>
+                    <th>Avatar</th>
+                    <th>Username</th>
+                    <th>Commands</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: searchResults">
+                <tr>
+                    <td>
+                        <img data-bind="attr: { src: avatar }"
+                             height="100"/>
+                    </td>
+                    <td>
+                        <strong data-bind="text: username"></strong>
+                    </td>
+                    <td>
+                        <button class="btn btn-success">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        var vm = {
+            searchCriteriaCollection: ko.observableArray([
+                { displayName: 'Username', name: 'username', value: '' }
+            ]),
+            searchResults: ko.observableArray(),
+            searchUsers: function () {
+                var criteria = [];
+                for (var i = 0; i < vm.searchCriteriaCollection().Length; i++) {
+                    var item = vm.searchCriteriaCollection()[i];
+                    criteria.push(JSON.parse('{ ' + item.name + ' : ' + item.value + ' }'));
+                }
+                $.get('@(Url.Action("SearchUsers", "Admin"))', criteria, function (responseData) {
+                    vm.searchResults(responseData);
+                });
+            }
+        };
+
+        ko.applyBindings(vm);
+    </script>
+}
