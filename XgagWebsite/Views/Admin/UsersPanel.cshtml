@@ -28,12 +28,17 @@
         </button>
     </div>
 
+    <hr />
+
     <div class="row">
-        <table class="table table-bordered table-responsive table-striped">
+        <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
                     <th>Avatar</th>
                     <th>Username</th>
+                    <th>Email</th>
+                    <th>Is Activated</th>
+                    <th>Last Login</th>
                     <th>Commands</th>
                 </tr>
             </thead>
@@ -44,7 +49,16 @@
                              height="100"/>
                     </td>
                     <td>
-                        <strong data-bind="text: username"></strong>
+                        <h4 data-bind="text: username"></h4>
+                    </td>
+                    <td>
+                        <h4 data-bind="text: email"></h4>
+                    </td>
+                    <td>
+                        <h4 data-bind="text: isActivated"></h4>
+                    </td>
+                    <td>
+                        <h4 data-bind="text: lastLogin"></h4>
                     </td>
                     <td>
                         <button class="btn btn-success">
@@ -61,15 +75,18 @@
     <script>
         var vm = {
             searchCriteriaCollection: ko.observableArray([
-                { displayName: 'Username', name: 'username', value: '' }
+                { displayName: 'Username:', name: 'username', value: '' },
+                { displayName: 'Email:', name: 'email', value: '' },
+                { displayName: 'Is Activated:', name: 'isActivated', value: '' }
             ]),
             searchResults: ko.observableArray(),
             searchUsers: function () {
-                var criteria = [];
-                for (var i = 0; i < vm.searchCriteriaCollection().Length; i++) {
+                var criteria = {};
+                for (var i = 0; i < vm.searchCriteriaCollection().length; i++) {
                     var item = vm.searchCriteriaCollection()[i];
-                    criteria.push(JSON.parse('{ ' + item.name + ' : ' + item.value + ' }'));
+                    assign(criteria, item.name, item.value);
                 }
+                
                 $.get('@(Url.Action("SearchUsers", "Admin"))', criteria, function (responseData) {
                     vm.searchResults(responseData);
                 });

@@ -14,7 +14,10 @@ namespace XgagWebsite.Controllers
             return View();
         }
 
-        public async Task<ActionResult> SearchUsers(string username)
+        public async Task<ActionResult> SearchUsers(
+            string username,
+            string email,
+            bool? isActivated)
         {
             var result = DbContext.Users.Select(u => u);
             if (!string.IsNullOrEmpty(username))
@@ -22,7 +25,17 @@ namespace XgagWebsite.Controllers
                 result = result.Where(u => u.UserName == username);
             }
 
-            return JsonResult(result.ToList().Select(u => (ApplicationUserModel)u));
+            if (!string.IsNullOrEmpty(email))
+            {
+                result = result.Where(u => u.Email == email);
+            }
+
+            if (isActivated.HasValue)
+            {
+                result = result.Where(u => u.IsActivated == isActivated.Value);
+            }
+
+            return JsonResult(result.ToList().Select(u => (ApplicationUserRichModel)u));
         }
     }
 }

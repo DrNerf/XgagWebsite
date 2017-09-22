@@ -67,6 +67,19 @@ namespace XgagWebsite.Models
                 Avatar = user.TrimRelativePrefix()
             };
         }
+
+        public static implicit operator ApplicationUserRichModel(ApplicationUser user)
+        {
+            return new ApplicationUserRichModel()
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Avatar = user.TrimRelativePrefix(),
+                Email = user.Email,
+                IsActivated = user.IsActivated,
+                LastLogin = user.LastLogin
+            };
+        }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

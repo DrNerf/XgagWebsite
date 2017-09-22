@@ -47,8 +47,9 @@
     <Compile Include="Posts\PostModel.cs" />
     <Compile Include="Posts\PostRichModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="System\ApplicationUserModel.cs" />
-    <Compile Include="System\SessionUserModel.cs" />
+    <Compile Include="System\User\ApplicationUserModel.cs" />
+    <Compile Include="System\User\ApplicationUserRichModel.cs" />
+    <Compile Include="System\User\SessionUserModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
