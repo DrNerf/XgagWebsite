@@ -16,19 +16,20 @@ namespace XgagWebsite.Controllers
         [Authorize]
         public async Task<ActionResult> Index(int? page)
         {
-            Task.Factory.StartNew(() => 
-            {
-                using (ApplicationDbContext db = new ApplicationDbContext())
-                {
-                    var latestRanking = db.RankingHistory.OrderByDescending(rh => rh.RankingDateTime).FirstOrDefault();
-                    if (latestRanking == null || 
-                        latestRanking.RankingDateTime.AddDays(ConfigurationHelper.Instance.RankingPersistPeriod) 
-                        < DateTime.Now)
-                    {
-                        RankPeopleLists(db);
-                    } 
-                }
-            });
+            // Disabled feature.
+            //Task.Factory.StartNew(() => 
+            //{
+            //    using (ApplicationDbContext db = new ApplicationDbContext())
+            //    {
+            //        var latestRanking = db.RankingHistory.OrderByDescending(rh => rh.RankingDateTime).FirstOrDefault();
+            //        if (latestRanking == null || 
+            //            latestRanking.RankingDateTime.AddDays(ConfigurationHelper.Instance.RankingPersistPeriod) 
+            //            < DateTime.Now)
+            //        {
+            //            RankPeopleLists(db);
+            //        } 
+            //    }
+            //});
             var postOfTheDay = DbContext.PostsOfTheDay
                 .FirstOrDefault(p => DbFunctions.TruncateTime(p.Date) == DbFunctions.TruncateTime(DateTime.Now));
             if (postOfTheDay == null)
@@ -126,6 +127,7 @@ namespace XgagWebsite.Controllers
         }
 
         [Authorize]
+        [NonAction]
         public ActionResult ShitList()
         {
             var voteType = VoteType.Down;
@@ -148,6 +150,7 @@ namespace XgagWebsite.Controllers
         }
 
         [Authorize]
+        [NonAction]
         public ActionResult GoodGuyList()
         {
             var voteType = VoteType.Up;
@@ -170,6 +173,7 @@ namespace XgagWebsite.Controllers
         }
 
         [Authorize]
+        [NonAction]
         public ActionResult ChitChats()
         {
             var chitChats = DbContext.ChitChats
@@ -180,6 +184,7 @@ namespace XgagWebsite.Controllers
         }
 
         [Authorize]
+        [NonAction]
         public ActionResult Chat()
         {
             return View();

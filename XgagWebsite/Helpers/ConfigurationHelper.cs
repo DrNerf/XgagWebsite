@@ -114,6 +114,21 @@ namespace XgagWebsite.Helpers
             }
         }
 
+        private bool? m_EnableEmailNotifications;
+
+        public bool EnableEmailNotifications
+        {
+            get
+            {
+                if (!m_EnableEmailNotifications.HasValue)
+                {
+                    m_EnableEmailNotifications = bool.Parse(ConfigurationManager.AppSettings[nameof(EnableEmailNotifications)]);
+                }
+
+                return m_EnableEmailNotifications.Value;
+            }
+        }
+
         private int? m_RankingPeopleCount;
 
         public int RankingPeopleCount

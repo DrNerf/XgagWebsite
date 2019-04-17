@@ -64,6 +64,11 @@ namespace XgagWebsite.Services
         /// <param name="model">The model.</param>
         public void SendToAllReceivers(string message)
         {
+            if (!ConfigurationHelper.Instance.EnableEmailNotifications)
+            {
+                return;
+            }
+
             // Command line argument must the the SMTP host.
             m_SmtpClient = new SmtpClient(SmtpHost);
             m_SmtpClient.UseDefaultCredentials = false;
