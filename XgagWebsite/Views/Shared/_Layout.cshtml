@@ -5,9 +5,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="http://www.naxex-tech.com/favicon.ico" type="image/x-icon" rel="shortcut icon">
-    <link href="http://www.naxex-tech.com/favicon.ico" type="image/x-icon" rel="icon">
-    <title>@ViewBag.Title - Xgag</title>
+    <link href="http://www.botronsoft.com/wp-content/uploads/2018/05/favicon.png" type="image/x-icon" rel="shortcut icon">
+    <link href="http://www.botronsoft.com/wp-content/uploads/2018/05/favicon.png" type="image/x-icon" rel="icon">
+    <title>@ViewBag.Title - @ConfigurationHelper.Instance.ProductName</title>
     @Styles.Render("~/Content/css")
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link href="~/Content/magicsuggest-min.css" rel="stylesheet" />
@@ -23,7 +23,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a href="/Home/Index">
-                    <img src="http://www.naxex-tech.com/images/naxex-homelogo" class="navbar-brand" height="55" />
+                    <img src="@(ConfigurationHelper.Instance.ProductLogo)" class="navbar-brand" height="55" />
                 </a>
             </div>
             <div class="navbar-collapse collapse">
@@ -113,7 +113,7 @@
                         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
                 @Html.Partial("_LoginPartial")
-                @Html.Partial("_RemainingVotesPartial")
+                @*@Html.Partial("_RemainingVotesPartial")*@
             </div>
         </div>
     </div>
@@ -121,7 +121,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Xgag</p>
+            <p>&copy; @DateTime.Now.Year - Memes for Jira</p>
         </footer>
     </div>
 

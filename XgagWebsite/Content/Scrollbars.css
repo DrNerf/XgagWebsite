@@ -9,10 +9,10 @@
 
 .scrollbar::-webkit-scrollbar {
     width: 10px;
-    background-color: #df691a;
+    background-color: #ef4c3a;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
     background-color: #4e5d6c;
-    background-image: -webkit-linear-gradient(45deg, #df691a 25%, #2b3e50 25%, #2b3e50 50%, #df691a 50%, #df691a 75%, #2b3e50 75%, #2b3e50)
+    background-image: -webkit-linear-gradient(45deg, #ef4c3a 25%, #2b3e50 25%, #2b3e50 50%, #ef4c3a 50%, #ef4c3a 75%, #2b3e50 75%, #2b3e50)
 }

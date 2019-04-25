@@ -263,5 +263,35 @@ namespace XgagWebsite.Helpers
                 return m_CensorshipText;
             }
         }
+
+        private string m_ProductName;
+
+        public string ProductName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_ProductName))
+                {
+                    m_ProductName = ConfigurationManager.AppSettings[nameof(ProductName)];
+                }
+
+                return m_ProductName;
+            }
+        }
+
+        private string m_ProductLogo;
+
+        public string ProductLogo
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_ProductLogo))
+                {
+                    m_ProductLogo = ConfigurationManager.AppSettings[nameof(ProductLogo)];
+                }
+
+                return m_ProductLogo;
+            }
+        }
     }
 }
