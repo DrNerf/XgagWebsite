@@ -114,22 +114,25 @@
                 </div>
                 <br />
                 <div class="row">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Post of the day:</div>
-                        <div class="panel-body">
-                            <a href="/Posts/View/@(Model.PostOfTheDay.Post.PostId)">
-                                @string.Format(
-                                    "{0} with {1} points!",
-                                    Model.PostOfTheDay.Post.Title,
-                                    Model.PostOfTheDay.Post.Votes.Sum(v => (int)v.Type))
-                            </a>
-                            <div class="post-preview">
+                    @if (Model.PostOfTheDay != null)
+                    {
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Post of the day:</div>
+                            <div class="panel-body">
                                 <a href="/Posts/View/@(Model.PostOfTheDay.Post.PostId)">
-                                    <img src="@(string.Format("/Images/View/{0}", Model.PostOfTheDay.Post.Image.ImageId))" />
+                                    @string.Format(
+                                     "{0} with {1} points!",
+                                     Model.PostOfTheDay.Post.Title,
+                                     Model.PostOfTheDay.Post.Votes.Sum(v => (int)v.Type))
                                 </a>
+                                <div class="post-preview">
+                                    <a href="/Posts/View/@(Model.PostOfTheDay.Post.PostId)">
+                                        <img src="@(string.Format("/Images/View/{0}", Model.PostOfTheDay.Post.Image.ImageId))" />
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                     <div class="panel panel-default">
                         <div class="panel-heading">Top contributors:</div>
                         <div class="panel-body">

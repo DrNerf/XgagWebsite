@@ -36,12 +36,15 @@ namespace XgagWebsite.Controllers
             {
                 var randomPost = DbContext.Posts
                     .OrderBy(p => Guid.NewGuid())
-                    .First(p => p.Image != null);
-                var newPostOfTheDay = DbContext.PostsOfTheDay.Create();
-                newPostOfTheDay.Date = DateTime.Now.Date;
-                newPostOfTheDay.Post = randomPost;
-                postOfTheDay = DbContext.PostsOfTheDay.Add(newPostOfTheDay);
-                await DbContext.SaveChangesAsync();
+                    .FirstOrDefault(p => p.Image != null);
+                if (randomPost != null)
+                {
+                    var newPostOfTheDay = DbContext.PostsOfTheDay.Create();
+                    newPostOfTheDay.Date = DateTime.Now.Date;
+                    newPostOfTheDay.Post = randomPost;
+                    postOfTheDay = DbContext.PostsOfTheDay.Add(newPostOfTheDay);
+                    await DbContext.SaveChangesAsync(); 
+                }
             }
 
             var pageSize = ConfigurationHelper.Instance.PageSize;
