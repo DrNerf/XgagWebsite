@@ -293,5 +293,20 @@ namespace XgagWebsite.Helpers
                 return m_ProductLogo;
             }
         }
+
+        private string m_EmailValidator;
+
+        public string EmailValidator
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_EmailValidator))
+                {
+                    m_EmailValidator = ConfigurationManager.AppSettings[nameof(EmailValidator)];
+                }
+
+                return m_EmailValidator;
+            }
+        }
     }
 }

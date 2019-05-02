@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using XgagWebsite.Helpers;
 using XgagWebsite.Models;
 
 namespace XgagWebsite.Controllers
@@ -172,6 +173,14 @@ namespace XgagWebsite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            if (!string.IsNullOrEmpty(ConfigurationHelper.Instance.EmailValidator))
+            {
+                if (!model.Email.Contains($"@{ConfigurationHelper.Instance.EmailValidator}"))
+                {
+                    ModelState.AddModelError("Email", $"This email is not part of {ConfigurationHelper.Instance.EmailValidator}.");
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
