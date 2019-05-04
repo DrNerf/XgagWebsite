@@ -5,8 +5,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="http://www.botronsoft.com/wp-content/uploads/2018/05/favicon.png" type="image/x-icon" rel="shortcut icon">
-    <link href="http://www.botronsoft.com/wp-content/uploads/2018/05/favicon.png" type="image/x-icon" rel="icon">
+    <link href="@(ConfigurationHelper.Instance.ProductFavicon)" type="image/x-icon" rel="shortcut icon">
+    <link href="@(ConfigurationHelper.Instance.ProductFavicon)" type="image/x-icon" rel="icon">
     <title>@ViewBag.Title - @ConfigurationHelper.Instance.ProductName</title>
     @Styles.Render("~/Content/css")
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />

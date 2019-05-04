@@ -56,10 +56,12 @@ namespace XgagWebsite.Controllers
             post.Owner = owner;
             post.IsNSFW = isNSFW;
 
-            DbContext.Posts.Add(post);
+            var dbPost = DbContext.Posts.Add(post);
             await DbContext.SaveChangesAsync();
 
+            // Don't await so we dont slow down the upload.
             NotifySubscribedUsersForNewPost();
+            SlackHelper.SendNotification(dbPost.PostId, GetCurrentWebsiteRoot());
 
             return RedirectToAction("Index", "Home");
         }

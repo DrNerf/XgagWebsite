@@ -246,6 +246,7 @@
     <Compile Include="Helpers\ConfigurationHelper.cs" />
     <Compile Include="Helpers\ImagesHelper.cs" />
     <Compile Include="Helpers\RolesHelper.cs" />
+    <Compile Include="Helpers\SlackHelper.cs" />
     <Compile Include="Helpers\YouTubeHelper.cs" />
     <Compile Include="Migrations\201611282023147_InitialCreate.cs" />
     <Compile Include="Migrations\201611282023147_InitialCreate.Designer.cs">

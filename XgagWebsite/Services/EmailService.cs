@@ -108,8 +108,15 @@ namespace XgagWebsite.Services
         /// </summary>
         public void Dispose()
         {
-            m_MailMessage.Dispose();
-            m_SmtpClient.Dispose();
+            if (m_MailMessage != null)
+            {
+                m_MailMessage.Dispose(); 
+            }
+
+            if (m_SmtpClient != null)
+            {
+                m_SmtpClient.Dispose(); 
+            }
         }
 
         public static string ConstructEmailBody(string message)

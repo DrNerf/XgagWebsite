@@ -28,5 +28,10 @@ namespace XgagWebsite.Controllers
         {
             return Content(JsonConvert.SerializeObject(result), "application/json");
         }
+
+        protected string GetCurrentWebsiteRoot()
+        {
+            return Request.Url.GetLeftPart(UriPartial.Authority);
+        }
     }
 }

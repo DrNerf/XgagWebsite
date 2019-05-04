@@ -308,5 +308,35 @@ namespace XgagWebsite.Helpers
                 return m_EmailValidator;
             }
         }
+
+        private string m_SlackHook;
+
+        public string SlackHook
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_SlackHook))
+                {
+                    m_SlackHook = ConfigurationManager.AppSettings[nameof(SlackHook)];
+                }
+
+                return m_SlackHook;
+            }
+        }
+
+        private string m_ProductFavicon;
+
+        public string ProductFavicon
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_ProductFavicon))
+                {
+                    m_ProductFavicon = ConfigurationManager.AppSettings[nameof(ProductFavicon)];
+                }
+
+                return m_ProductFavicon;
+            }
+        }
     }
 }
