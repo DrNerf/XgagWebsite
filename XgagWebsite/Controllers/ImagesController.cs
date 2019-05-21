@@ -18,7 +18,7 @@ namespace XgagWebsite.Controllers
             if (item != null)
             {
                 byte[] buffer = item.Data;
-                return File(buffer, "image/jpg", string.Format("{0}.jpg", id)); 
+                return new FileStreamResult(new MemoryStream(buffer), "image/jpg"); 
             }
 
             throw new HttpException(404, "Whoops, Image not found.");

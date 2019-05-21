@@ -61,7 +61,7 @@ namespace XgagWebsite.Controllers
 
             // Don't await so we dont slow down the upload.
             NotifySubscribedUsersForNewPost();
-            SlackHelper.SendNotification(dbPost.PostId, GetCurrentWebsiteRoot());
+            SlackHelper.SendNotification(dbPost, GetCurrentWebsiteRoot());
 
             return RedirectToAction("Index", "Home");
         }

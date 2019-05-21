@@ -167,7 +167,14 @@
                                         </a>
                                         <div class="post-preview">
                                             <a href="/Posts/View/@(post.PostId)">
-                                                <img src="@(string.Format("/Images/View/{0}", post.Image.ImageId))" />
+                                                @if (post.Image != null)
+                                                {
+                                                    <img src="@(string.Format("/Images/View/{0}", post.Image.ImageId))" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="@(post.YouTubeLink.GetYoutubeThumbnail())" />
+                                                }
                                             </a>
                                         </div>
                                     </li>
