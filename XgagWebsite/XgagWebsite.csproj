@@ -434,6 +434,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\magicsuggest-min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\PostsLoader.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\VotingFunctions.js" />
@@ -486,6 +487,8 @@
     <Content Include="Views\Account\RegisterInfo.cshtml" />
     <Content Include="Views\Home\Chat.cshtml" />
     <Content Include="Views\Admin\UsersPanel.cshtml" />
+    <Content Include="Views\Home\_Posts.cshtml" />
+    <Content Include="Views\Shared\_Spinner.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Models\" />

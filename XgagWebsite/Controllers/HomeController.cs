@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using XgagWebsite.Enums;
@@ -72,6 +73,19 @@ namespace XgagWebsite.Controllers
             };
 
             return View(viewModel);
+        }
+
+        [Authorize]
+        public ActionResult Posts(int page)
+        {
+            var pageSize = ConfigurationHelper.Instance.PageSize;
+            var posts = DbContext.Posts
+                .OrderByDescending(p => p.DateCreated)
+                .Skip(pageSize * (page - 1))
+                .Take(pageSize)
+                .ToList();
+
+            return PartialView("_Posts", posts);
         }
 
         public ActionResult About()
