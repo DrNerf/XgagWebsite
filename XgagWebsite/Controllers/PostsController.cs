@@ -55,6 +55,11 @@ namespace XgagWebsite.Controllers
             post.Title = title;
             post.Owner = owner;
             post.IsNSFW = isNSFW;
+            post.Votes.Add(new Vote()
+            {
+                Type = VoteType.Up,
+                Voter = owner
+            });
 
             var dbPost = DbContext.Posts.Add(post);
             await DbContext.SaveChangesAsync();
