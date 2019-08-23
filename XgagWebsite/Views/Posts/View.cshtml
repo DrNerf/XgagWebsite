@@ -4,11 +4,15 @@
     ViewBag.Title = Model.Title;
 }
 
+@section styles {
+    <link href="~/Content/Comments.css" rel="stylesheet" />
+}
+
 <div class="jumbotron">
     <div class="container">
         <div class="col-lg-10">
             <div class="row post-row">
-                @{ 
+                @{
                     var userVote = Request.IsAuthenticated ? Model.Votes.FirstOrDefault(v => v.Voter.UserName == User.Identity.Name) : null;
                     var hasUserVoted = userVote != null;
                 }
@@ -44,63 +48,76 @@
                     <span class="pull-right text-info">Posted at: <span>@Model.DateCreated</span></span>
                 </div>
             </div>
-            <hr />
-            <div class="row container">
-                <textarea id="post-comment" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻" class="text-editor form-control pull-left"></textarea>
-                <button id="send-post-comment" 
-                        data-id="@(Model.PostId)" 
-                        class="btn btn-primary btn-block pull-right @(!Request.IsAuthenticated ? "disabled" : string.Empty)">
-                    <span id="send-post-comment-icon" class="glyphicon glyphicon-send"></span>
-                </button>
-            </div>
-            <div class="row container">
-                @if(Model.Comments != null)
-                {
-                    foreach (var comment in Model.Comments)
-                    {
-                        <div class="row comment-row">
-                            <img class="col-lg-3" src="@Url.Content(comment.Owner.ProfilePictureUrl)" />
-                            <div class="row col-lg-9">
-                                <h4 class="text-primary">
-                                    @(comment.Owner.UserName)
-                                    @if (Model.Owner.UserName == comment.Owner.UserName)
-                                    {
-                                        <span class="text-success">OP</span>
-                                    }
-                                    - <span class="text-info">@(comment.DateTimePosted)</span>
-                                </h4>
-                                <p>@(Html.Raw(comment.Text))</p>
-                                <button class="btn btn-primary btn-sm pull-right @(!Request.IsAuthenticated ? "disabled" : string.Empty)"
-                                        data-toggle="modal"
-                                        data-target="#reply-modal"
-                                        onclick="selectComment(@(comment.CommentId));">
-                                    <span class="glyphicon glyphicon-comment"></span>
+            <div class="comment_block">
+                <div class="create_new_comment">
+                    <div class="user_avatar">
+                        <img src="@User.Identity.GetProfilePictureUrl()">
+                    </div>
+                    <div class="input_comment">
+                        @*<input class="form-control" type="text" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻">*@
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="glyphicon glyphicon-send"></i>
                                 </button>
-                            </div>
-                            @if (comment.Comments != null)
-                            {
-                                <div class="container row col-lg-11 pull-right">
-                                    @foreach (var reply in comment.Comments)
-                                    {
-                                        <div class="container reply-row row">
-                                            <img class="col-lg-3" src="@Url.Content(reply.Owner.ProfilePictureUrl)" />
-                                            <div class="col-lg-8">
-                                                <h4 class="text-primary">
-                                                    @(reply.Owner.UserName)
-                                                    @if (Model.Owner.UserName == reply.Owner.UserName)
-                                                    {
-                                                        <span class="text-success">OP</span>
-                                                    }
-                                                    - <span class="text-info">@(reply.DateTimePosted)</span>
-                                                </h4>
-                                                <p>@Html.Raw(reply.Text)</p>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            }
+                            </span>
                         </div>
-                    }
+                    </div>
+                </div>
+
+                @foreach (var comment in Model.Comments)
+                {
+                    <div class="new_comment clearfix">
+                        <ul class="user_comment">
+                            <div class="user_avatar">
+                                <img src="@Url.Content(comment.Owner.ProfilePictureUrl)">
+                            </div>
+                            <div class="comment_body">
+                                <p>@(Html.Raw(comment.Text))</p>
+                            </div>
+                            <div class="comment_toolbar">
+			 		            <div class="comment_details">
+			 			            <ul>
+			 				            <li><i class="glyphicon glyphicon-time"></i>@comment.DateTimePosted.ToString("HH:mm")</li>
+                                        <li><i class="glyphicon glyphicon-calendar"></i>@comment.DateTimePosted.ToString("dd/MM/yyyy")</li>
+			 				            <li><i class="glyphicon glyphicon-pencil"></i> <span class="user">@comment.Owner.UserName</span></li>
+			 			            </ul>
+			 		            </div>
+                                <div class="comment_tools">
+			 			            <ul>
+			 				            <li><i class="glyphicon glyphicon-comment"></i></li>
+			 			            </ul>
+			 		            </div>
+			 	            </div>
+
+                            @foreach (var reply in comment.Comments)
+                            {
+                                <li>
+                                    <div class="user_avatar">
+			 		                    <img src="@Url.Content(reply.Owner.ProfilePictureUrl)">
+			 	                    </div>
+                                    <div class="comment_body">
+                                        <p>@(Html.Raw(reply.Text))</p>
+			 	                    </div>
+                                    <div class="comment_toolbar">
+			 		                    <div class="comment_details">
+			 			                    <ul>
+			 				                    <li><i class="glyphicon glyphicon-time"></i>@reply.DateTimePosted.ToString("HH:mm")</li>
+                                                <li><i class="glyphicon glyphicon-calendar"></i>@reply.DateTimePosted.ToString("dd/MM/yyyy")</li>
+			 				                    <li><i class="glyphicon glyphicon-pencil"></i> <span class="user">@reply.Owner.UserName</span></li>
+			 			                    </ul>
+			 		                    </div>
+                                        <div class="comment_tools">
+			 			                    <ul>
+			 				                    @*<li><i class="glyphicon glyphicon-comment"></i></li>*@
+			 			                    </ul>
+			 		                    </div>
+			 	                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 }
             </div>
         </div>
@@ -194,7 +211,7 @@
                     icon.removeClass('glyphicon-send');
                     icon.addClass('glyphicon-picture');
                 }
-                else{
+                else {
                     icon.removeClass('glyphicon-picture');
                     icon.addClass('glyphicon-send');
                 }
@@ -206,14 +223,14 @@
                 if (isTextImageUrl(value)) {
                     button.val('ʕ•ᴥ•ʔ');
                 }
-                else{
+                else {
                     button.val('Reply'); //shhhh
                 }
             });
         });
 
         function isTextImageUrl(url) {
-            return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+            return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
         }
-    </script>    
+    </script>
 }

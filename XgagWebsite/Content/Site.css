@@ -26,6 +26,11 @@ textarea {
 .post-image {
     width: 100%;
     margin: 0px;
+    transition: transform .2s;
+}
+
+.post-content-wrapper > a > .post-image:hover {
+    transform: scale(1.1);
 }
 
 .post-row {
@@ -233,9 +238,9 @@ pre {
     border: 1px solid #ef4c3a;
 }
 
-    .post-preview img {
-        width: 100%;
-    }
+.post-preview img {
+    width: 100%;
+}
 
 .nsfw-overlay {
     position: absolute;
@@ -252,6 +257,7 @@ pre {
 
 .post-content-wrapper{
     position: relative;
+    overflow: hidden;
 }
 
 .loading-overlay {
