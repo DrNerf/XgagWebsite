@@ -260,6 +260,15 @@ pre {
     overflow: hidden;
 }
 
+.btn-group-label {
+    cursor: none !important;
+    pointer-events: none;
+}
+
+.post-panel-body {
+    padding: 0px !important;
+}
+
 .loading-overlay {
     /*background-color: #ef4c3a;*/
     position: absolute;

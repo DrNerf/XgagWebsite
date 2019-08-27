@@ -8,15 +8,17 @@
     <link href="~/Content/Comments.css" rel="stylesheet" />
 }
 
-<div class="jumbotron">
-    <div class="container">
-        <div class="col-lg-10">
-            <div class="row post-row">
-                @{
-                    var userVote = Request.IsAuthenticated ? Model.Votes.FirstOrDefault(v => v.Voter.UserName == User.Identity.Name) : null;
-                    var hasUserVoted = userVote != null;
-                }
-                <h3 class="text-primary">@Model.Title</h3>
+<div class="container">
+    <div class="col-lg-10">
+        <div class="panel panel-primary">
+            @{
+                var userVote = Request.IsAuthenticated ? Model.Votes.FirstOrDefault(v => v.Voter.UserName == User.Identity.Name) : null;
+                var hasUserVoted = userVote != null;
+            }
+            <div class="panel-heading">
+                <h3 class="panel-title">@Model.Title</h3>
+            </div>
+            <div class="panel-body post-panel-body">
                 @if (Model.Image != null)
                 {
                     <img src="@(string.Format("/Images/View/{0}", Model.Image.ImageId))" class="post-image" />
@@ -25,10 +27,12 @@
                 {
                     <text>@Html.Raw(Model.YouTubeLink)</text>
                 }
-                <div>
-                    <span class="text-info text">Score: <span id="score-@(Model.PostId)">@Model.CalculateScore()</span></span>
-                </div>
-                <div>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group" role="group">
+                    <span class="btn btn-default btn-group-label">
+                        Score <span id="score-@(Model.PostId)" class="badge">@Model.CalculateScore()</span>
+                    </span>
                     <button onclick="vote(@(Model.PostId), 1)"
                             data-unvote="@(hasUserVoted)"
                             id="upvote-@(Model.PostId)"
@@ -45,110 +49,110 @@
                                     @(!Request.IsAuthenticated ? "disabled" : "")">
                         <span class="glyphicon glyphicon-arrow-down"></span>
                     </button>
-                    <span class="pull-right text-info">
-                        <i class="glyphicon glyphicon-calendar"></i><span>@Model.DateCreated.GetDateString()</span>
-                        <i class="glyphicon glyphicon-time"></i><span>@Model.DateCreated.GetTimeString()</span>
-                    </span>
+                </div>
+                <span class="pull-right text-info">
+                    <i class="glyphicon glyphicon-calendar"></i><span>@Model.DateCreated.GetDateString()</span>
+                    <i class="glyphicon glyphicon-time"></i><span>@Model.DateCreated.GetTimeString()</span>
+                </span>
+            </div>
+        </div>
+        <div class="comment_block">
+            <div class="create_new_comment">
+                <div class="user_avatar">
+                    <img src="@User.Identity.GetProfilePictureUrl()">
+                </div>
+                <div class="input_comment">
+                    @*<input class="form-control" type="text" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻">*@
+                    <div class="input-group">
+                        <input id="post-comment" type="text" class="form-control" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻">
+                        <span class="input-group-btn">
+                            <button id="send-post-comment" data-id="@Model.PostId" class="btn btn-primary" type="button">
+                                <i class="glyphicon glyphicon-send"></i>
+                            </button>
+                        </span>
+                    </div>
                 </div>
             </div>
-            <div class="comment_block">
-                <div class="create_new_comment">
-                    <div class="user_avatar">
-                        <img src="@User.Identity.GetProfilePictureUrl()">
-                    </div>
-                    <div class="input_comment">
-                        @*<input class="form-control" type="text" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻">*@
-                        <div class="input-group">
-                            <input id="post-comment" type="text" class="form-control" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻">
-                            <span class="input-group-btn">
-                                <button id="send-post-comment" data-id="@Model.PostId" class="btn btn-primary" type="button">
-                                    <i class="glyphicon glyphicon-send"></i>
-                                </button>
-                            </span>
+
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="new_comment clearfix">
+                    <ul class="user_comment">
+                        <div class="user_avatar">
+                            <img src="@Url.Content(comment.Owner.ProfilePictureUrl)">
                         </div>
-                    </div>
+                        <div class="comment_body">
+                            <p>@(Html.Raw(comment.Text))</p>
+                        </div>
+                        <div class="comment_toolbar">
+                            <div class="comment_details">
+                                <ul>
+                                    <li>
+                                        <i class="glyphicon glyphicon-user"></i>
+                                        @if (Model.Owner.UserName == comment.Owner.UserName)
+                                        {
+                                            <span class="label label-success op" data-toggle="tooltip" data-placement="top" title="That's the OP right there!">
+                                                @comment.Owner.UserName
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="user">@comment.Owner.UserName</span>
+                                        }
+                                    </li>
+                                    <li><i class="glyphicon glyphicon-calendar"></i>@comment.DateTimePosted.GetDateString()</li>
+                                    <li><i class="glyphicon glyphicon-time"></i>@comment.DateTimePosted.GetTimeString()</li>
+                                </ul>
+                            </div>
+                            <div class="comment_tools">
+                                <ul>
+                                    <li class="reply_button" data-toggle="modal" data-target="#reply-modal" onclick="selectComment(@comment.CommentId);">
+                                        <i class="glyphicon glyphicon-comment"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        @foreach (var reply in comment.Comments)
+                        {
+                            <li>
+                                <div class="user_avatar">
+                                    <img src="@Url.Content(reply.Owner.ProfilePictureUrl)">
+                                </div>
+                                <div class="comment_body">
+                                    <p>@(Html.Raw(reply.Text))</p>
+                                </div>
+                                <div class="comment_toolbar">
+                                    <div class="comment_details">
+                                        <ul>
+                                            <li>
+                                                <i class="glyphicon glyphicon-user"></i>
+                                                @if (Model.Owner.UserName == reply.Owner.UserName)
+                                                {
+                                                    <span class="label label-success op" data-toggle="tooltip" data-placement="top" title="That's the OP right there!">
+                                                        @reply.Owner.UserName
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="user">@reply.Owner.UserName</span>
+                                                }
+                                            </li>
+                                            <li><i class="glyphicon glyphicon-calendar"></i>@reply.DateTimePosted.ToString("dd/MM/yyyy")</li>
+                                            <li><i class="glyphicon glyphicon-time"></i>@reply.DateTimePosted.ToString("HH:mm")</li>
+                                        </ul>
+                                    </div>
+                                    <div class="comment_tools">
+                                        <ul>
+                                            @*<li><i class="glyphicon glyphicon-comment"></i></li>*@
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
                 </div>
-
-                @foreach (var comment in Model.Comments)
-                {
-                    <div class="new_comment clearfix">
-                        <ul class="user_comment">
-                            <div class="user_avatar">
-                                <img src="@Url.Content(comment.Owner.ProfilePictureUrl)">
-                            </div>
-                            <div class="comment_body">
-                                <p>@(Html.Raw(comment.Text))</p>
-                            </div>
-                            <div class="comment_toolbar">
-			 		            <div class="comment_details">
-			 			            <ul>
-                                        <li>
-                                            <i class="glyphicon glyphicon-user"></i>
-                                            @if (Model.Owner.UserName == comment.Owner.UserName)
-                                            {
-                                                <span class="label label-success op" data-toggle="tooltip" data-placement="top" title="That's the OP right there!">
-                                                    @comment.Owner.UserName
-                                                </span>
-                                            }
-                                            else
-                                            {
-                                                <span class="user">@comment.Owner.UserName</span>
-                                            }
-                                        </li>
-                                        <li><i class="glyphicon glyphicon-calendar"></i>@comment.DateTimePosted.GetDateString()</li>
-			 				            <li><i class="glyphicon glyphicon-time"></i>@comment.DateTimePosted.GetTimeString()</li>
-			 			            </ul>
-			 		            </div>
-                                <div class="comment_tools">
-			 			            <ul>
-			 				            <li class="reply_button" data-toggle="modal" data-target="#reply-modal" onclick="selectComment(@comment.CommentId);">
-                                            <i class="glyphicon glyphicon-comment"></i>
-                                        </li>
-			 			            </ul>
-			 		            </div>
-			 	            </div>
-
-                            @foreach (var reply in comment.Comments)
-                            {
-                                <li>
-                                    <div class="user_avatar">
-			 		                    <img src="@Url.Content(reply.Owner.ProfilePictureUrl)">
-			 	                    </div>
-                                    <div class="comment_body">
-                                        <p>@(Html.Raw(reply.Text))</p>
-			 	                    </div>
-                                    <div class="comment_toolbar">
-			 		                    <div class="comment_details">
-			 			                    <ul>
-                                                <li>
-                                                    <i class="glyphicon glyphicon-user"></i>
-                                                    @if (Model.Owner.UserName == reply.Owner.UserName)
-                                                    {
-                                                        <span class="label label-success op" data-toggle="tooltip" data-placement="top" title="That's the OP right there!">
-                                                            @reply.Owner.UserName
-                                                        </span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="user">@reply.Owner.UserName</span>
-                                                    }
-                                                </li>
-                                                <li><i class="glyphicon glyphicon-calendar"></i>@reply.DateTimePosted.ToString("dd/MM/yyyy")</li>
-			 				                    <li><i class="glyphicon glyphicon-time"></i>@reply.DateTimePosted.ToString("HH:mm")</li>
-			 			                    </ul>
-			 		                    </div>
-                                        <div class="comment_tools">
-			 			                    <ul>
-			 				                    @*<li><i class="glyphicon glyphicon-comment"></i></li>*@
-			 			                    </ul>
-			 		                    </div>
-			 	                    </div>
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                }
-            </div>
+            }
         </div>
     </div>
 </div>
