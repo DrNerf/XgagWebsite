@@ -45,7 +45,10 @@
                                     @(!Request.IsAuthenticated ? "disabled" : "")">
                         <span class="glyphicon glyphicon-arrow-down"></span>
                     </button>
-                    <span class="pull-right text-info">Posted at: <span>@Model.DateCreated</span></span>
+                    <span class="pull-right text-info">
+                        <i class="glyphicon glyphicon-calendar"></i><span>@Model.DateCreated.GetDateString()</span>
+                        <i class="glyphicon glyphicon-time"></i><span>@Model.DateCreated.GetTimeString()</span>
+                    </span>
                 </div>
             </div>
             <div class="comment_block">
@@ -56,9 +59,9 @@
                     <div class="input_comment">
                         @*<input class="form-control" type="text" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻">*@
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻">
+                            <input id="post-comment" type="text" class="form-control" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻">
                             <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button">
+                                <button id="send-post-comment" data-id="@Model.PostId" class="btn btn-primary" type="button">
                                     <i class="glyphicon glyphicon-send"></i>
                                 </button>
                             </span>
@@ -79,14 +82,28 @@
                             <div class="comment_toolbar">
 			 		            <div class="comment_details">
 			 			            <ul>
-			 				            <li><i class="glyphicon glyphicon-time"></i>@comment.DateTimePosted.ToString("HH:mm")</li>
-                                        <li><i class="glyphicon glyphicon-calendar"></i>@comment.DateTimePosted.ToString("dd/MM/yyyy")</li>
-			 				            <li><i class="glyphicon glyphicon-pencil"></i> <span class="user">@comment.Owner.UserName</span></li>
+                                        <li>
+                                            <i class="glyphicon glyphicon-user"></i>
+                                            @if (Model.Owner.UserName == comment.Owner.UserName)
+                                            {
+                                                <span class="label label-success op" data-toggle="tooltip" data-placement="top" title="That's the OP right there!">
+                                                    @comment.Owner.UserName
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="user">@comment.Owner.UserName</span>
+                                            }
+                                        </li>
+                                        <li><i class="glyphicon glyphicon-calendar"></i>@comment.DateTimePosted.GetDateString()</li>
+			 				            <li><i class="glyphicon glyphicon-time"></i>@comment.DateTimePosted.GetTimeString()</li>
 			 			            </ul>
 			 		            </div>
                                 <div class="comment_tools">
 			 			            <ul>
-			 				            <li><i class="glyphicon glyphicon-comment"></i></li>
+			 				            <li class="reply_button" data-toggle="modal" data-target="#reply-modal" onclick="selectComment(@comment.CommentId);">
+                                            <i class="glyphicon glyphicon-comment"></i>
+                                        </li>
 			 			            </ul>
 			 		            </div>
 			 	            </div>
@@ -103,9 +120,21 @@
                                     <div class="comment_toolbar">
 			 		                    <div class="comment_details">
 			 			                    <ul>
-			 				                    <li><i class="glyphicon glyphicon-time"></i>@reply.DateTimePosted.ToString("HH:mm")</li>
+                                                <li>
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                                    @if (Model.Owner.UserName == reply.Owner.UserName)
+                                                    {
+                                                        <span class="label label-success op" data-toggle="tooltip" data-placement="top" title="That's the OP right there!">
+                                                            @reply.Owner.UserName
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="user">@reply.Owner.UserName</span>
+                                                    }
+                                                </li>
                                                 <li><i class="glyphicon glyphicon-calendar"></i>@reply.DateTimePosted.ToString("dd/MM/yyyy")</li>
-			 				                    <li><i class="glyphicon glyphicon-pencil"></i> <span class="user">@reply.Owner.UserName</span></li>
+			 				                    <li><i class="glyphicon glyphicon-time"></i>@reply.DateTimePosted.ToString("HH:mm")</li>
 			 			                    </ul>
 			 		                    </div>
                                         <div class="comment_tools">
@@ -175,6 +204,8 @@
         }
 
         $(function () {
+            //$('[data-toggle="tooltip"]').tooltip();
+
             $('#send-post-comment').click(function () {
                 var button = $('#send-post-comment');
                 button.addClass('disabled');

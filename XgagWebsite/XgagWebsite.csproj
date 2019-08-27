@@ -238,6 +238,7 @@
     <Compile Include="Enums\QuoteType.cs" />
     <Compile Include="Enums\VoteType.cs" />
     <Compile Include="Extensions\DangerTypeExtensions.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\IIdentityExtensions.cs" />
     <Compile Include="Extensions\MiscExtensions.cs" />
     <Compile Include="Global.asax.cs">
