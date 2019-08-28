@@ -31,7 +31,7 @@
             <div class="panel-footer">
                 <div class="btn-group" role="group">
                     <span class="btn btn-default btn-group-label">
-                        Score <span id="score-@(Model.PostId)" class="badge">@Model.CalculateScore()</span>
+                        Points <span id="score-@(Model.PostId)" class="badge">@Model.CalculateScore()</span>
                     </span>
                     <button onclick="vote(@(Model.PostId), 1)"
                             data-unvote="@(hasUserVoted)"

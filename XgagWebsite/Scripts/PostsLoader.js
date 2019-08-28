@@ -1,8 +1,13 @@
-﻿$(window).scroll(function () {
-    if ($(window).scrollTop() + $(window).height() === $(document).height()) {
-        console.log("Reached end of posts page, loading more.");
-        PostsLoader.loadNextPage();
-    }
+﻿$.fn.isInViewport = function () {
+    var elementTop = $(this).offset().top;
+    var elementBottom = elementTop + $(this).outerHeight();
+    var viewportTop = $(window).scrollTop();
+    var viewportBottom = viewportTop + $(window).height();
+    return elementBottom > viewportTop && elementTop < viewportBottom;
+};
+
+$(function () {
+    PostsLoader.listenForNextLoad();
 });
 
 PostsLoader = {
@@ -14,6 +19,7 @@ PostsLoader = {
         $.get("/Home/Posts?page=" + self.currentPage, function (response) {
             $("#posts-container").append(response);
             self.listenForLoadingImages();
+            self.listenForNextLoad();
         });
     },
     listenForLoadingImages: function () {
@@ -28,6 +34,15 @@ PostsLoader = {
             }
         }).each(function () {
             if (this.complete) $(this).load();
+        });
+    },
+    listenForNextLoad: function () {
+        $(window).on('scroll', function (event) {
+            if ($('.progress-spinner').isInViewport()) {
+                console.log("Reached end of posts page, loading more.");
+                $(this).off('scroll');
+                PostsLoader.loadNextPage();
+            }
         });
     }
 };
