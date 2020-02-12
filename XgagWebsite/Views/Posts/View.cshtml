@@ -57,22 +57,25 @@
             </div>
         </div>
         <div class="comment_block">
-            <div class="create_new_comment">
-                <div class="user_avatar">
-                    <img src="@User.Identity.GetProfilePictureUrl()">
-                </div>
-                <div class="input_comment">
-                    @*<input class="form-control" type="text" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻">*@
-                    <div class="input-group">
-                        <input id="post-comment" type="text" class="form-control" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻">
-                        <span class="input-group-btn">
-                            <button id="send-post-comment" data-id="@Model.PostId" class="btn btn-primary" type="button">
-                                <i class="glyphicon glyphicon-send"></i>
-                            </button>
-                        </span>
+            @if (Request.IsAuthenticated) 
+            { 
+                <div class="create_new_comment">
+                    <div class="user_avatar">
+                        <img src="@User.Identity.GetProfilePictureUrl()">
+                    </div>
+                    <div class="input_comment">
+                        @*<input class="form-control" type="text" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻">*@
+                        <div class="input-group">
+                            <input id="post-comment" type="text" class="form-control" placeholder="Give em' some hate! (ノಠ益ಠ)ノ彡┻━┻">
+                            <span class="input-group-btn">
+                                <button id="send-post-comment" data-id="@Model.PostId" class="btn btn-primary" type="button">
+                                    <i class="glyphicon glyphicon-send"></i>
+                                </button>
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
 
             @foreach (var comment in Model.Comments)
             {
