@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using XgagWebsite.Models;
@@ -55,8 +56,10 @@ namespace XgagWebsite.Helpers
                     payload.Attachments.Add(attachment);
                 }
 
-                var client = new HttpClient();
-                var result = client.PostAsJsonAsync(ConfigurationHelper.Instance.SlackHook, payload).Result;
+                using (var client = new HttpClient())
+                {
+                    var result = client.PostAsJsonAsync(ConfigurationHelper.Instance.SlackHook, payload).Result;
+                }
             }
 
             return null;
